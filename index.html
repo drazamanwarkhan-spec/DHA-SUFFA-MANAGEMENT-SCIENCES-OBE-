@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.2/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -45,7 +44,7 @@
     <div class="flex justify-between items-end mb-6">
       <div>
         <h1 class="text-4xl font-semibold tracking-tighter">OBE Analyzer</h1>
-        <p class="text-slate-400">Upload your Course Outline + Student Data • Instant Attainment + 60s Videos</p>
+        <p class="text-slate-400">Upload your Course Outline + Student Data • Instant OBE Attainment Reports</p>
       </div>
       <div class="flex gap-x-2 flex-wrap justify-end">
         <button onclick="resetDemo()" class="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl flex items-center gap-x-2">
@@ -58,8 +57,11 @@
         <button onclick="saveProgress()" class="px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-3xl flex items-center gap-x-2">
           <i class="fa-solid fa-floppy-disk"></i> <span>Save Progress</span>
         </button>
-        <button onclick="downloadExcelReport()" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 rounded-3xl flex items-center gap-x-2 text-white font-semibold">
-          <i class="fa-solid fa-file-excel"></i> <span>Download Excel Report</span>
+        <button onclick="saveToBrowser()" class="px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-3xl flex items-center gap-x-2">
+          <i class="fa-solid fa-cloud-arrow-up"></i> <span>Save in Browser</span>
+        </button>
+        <button onclick="loadFromBrowser()" class="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl flex items-center gap-x-2">
+          <i class="fa-solid fa-cloud-arrow-down"></i> <span>Load from Browser</span>
         </button>
         <button onclick="downloadWordReport()" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded-3xl flex items-center gap-x-2 text-white font-semibold">
           <i class="fa-solid fa-file-word"></i> <span>Download Word Report (Course Folder)</span>
@@ -75,7 +77,6 @@
       <button onclick="showTab(0)" class="tab-btn px-6 py-3 font-medium nav-active" data-tab="0">Course Outline</button>
       <button onclick="showTab(1)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="1">Student Data</button>
       <button onclick="showTab(2)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="2">OBE Dashboard</button>
-      <button onclick="showTab(3)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="3">60s Videos</button>
     </div>
 
     <!-- TAB 0: Course Outline + Upload -->
@@ -222,24 +223,6 @@
       </div>
     </div>
 
-    <!-- TAB 3: 60s Videos -->
-    <div id="tab-3" class="tab-content hidden">
-      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 max-w-2xl mx-auto">
-        <h3 class="font-semibold mb-4 flex items-center gap-x-2"><i class="fa-solid fa-video text-emerald-400"></i> Generate 60-Second Video Script</h3>
-        <button onclick="generateVideoScript()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 rounded-3xl font-semibold flex items-center justify-center gap-x-2 mb-4">
-          <i class="fa-solid fa-magic"></i> <span>Generate Script from Current Data</span>
-        </button>
-        <textarea id="video-script" rows="8" class="w-full bg-slate-950 border border-slate-700 rounded-2xl p-4 text-xs resize-y"></textarea>
-        <div class="flex gap-x-2 mt-3">
-          <button onclick="copyScript()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 rounded-3xl text-sm flex items-center justify-center gap-x-2">
-            <i class="fa-solid fa-copy"></i> <span>Copy</span>
-          </button>
-          <button onclick="simulateVideo()" class="flex-1 py-2 bg-white text-slate-900 hover:bg-slate-100 rounded-3xl text-sm font-semibold flex items-center justify-center gap-x-2">
-            <i class="fa-solid fa-play"></i> <span>Preview 60s</span>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -961,36 +944,6 @@ function renderAttainmentChart(data) {
   });
 }
 
-// 60s Video
-function generateVideoScript() {
-  const data = calculateAttainment();
-  let script = `[0-8s] Hook\nQuick OBE review for ${courseData.name} at DHA Suffa University.\n\n`;
-  clos.forEach(c => {
-    script += `${c.name}: ${data[c.id]?.attainment || 0}% attainment\n`;
-  });
-  script += `\n[45-60s] Next Steps\nTrack progress with this tool. Learn to Discover!`;
-  document.getElementById('video-script').value = script;
-}
-
-function copyScript() {
-  const ta = document.getElementById('video-script');
-  ta.select(); document.execCommand('copy');
-  alert("Script copied!");
-}
-
-function simulateVideo() {
-  const script = document.getElementById('video-script').value || "Generate script first";
-  const modal = document.createElement('div');
-  modal.className = `fixed inset-0 bg-black/80 flex items-center justify-center z-50`;
-  modal.innerHTML = `<div class="bg-slate-900 p-6 rounded-3xl max-w-md w-full mx-4"><div id="vid" class="min-h-[120px]"></div></div>`;
-  document.body.appendChild(modal);
-  const vid = modal.querySelector('#vid');
-  const lines = script.split('\n').filter(Boolean);
-  let i=0;
-  const t = setInterval(() => {
-    if (i < lines.length) { vid.innerHTML = lines[i]; i++; } else { clearInterval(t); setTimeout(()=>modal.remove(),800); }
-  }, 900);
-}
 
 function recalculateAll() {
   if (clos.length === 0) { alert("Add CLOs in the Course Outline tab first."); return; }
@@ -1050,95 +1003,48 @@ function loadProgress(e) {
   e.target.value = '';
 }
 
-// Excel export - multi-sheet workbook: Student Report, CLO Summary, Assessment Plan, Weekly Outline
-function safeCell(v) {
-  if (typeof v === 'number' && !isFinite(v)) return 0;
-  return v;
+// Save / Load in Browser (localStorage) - persists across sessions on this device/browser
+const BROWSER_SAVE_KEY = 'obe_dsu_saved_state_v1';
+
+function saveToBrowser() {
+  try {
+    const state = {
+      savedAt: new Date().toISOString(),
+      courseData, clos, assessments, weeklyOutline, students, currentThreshold
+    };
+    localStorage.setItem(BROWSER_SAVE_KEY, JSON.stringify(state));
+    alert('Saved in this browser. It will still be here next time you open this page on this device, until you clear it.');
+  } catch (err) {
+    console.error(err);
+    alert('Could not save in the browser (' + err.message + '). Your browser storage may be full or disabled (e.g. private/incognito mode).');
+  }
 }
 
-function downloadExcelReport() {
-  if (typeof XLSX === 'undefined') {
-    alert('Excel library failed to load (likely a connection issue). Generating a Word report instead, which you can still upload to the digital course folder.');
-    downloadWordReport();
-    return;
-  }
-  if (clos.length === 0) { alert('Add CLOs in the Course Outline tab first.'); return; }
-
-  const data = calculateAttainment();
-  const wb = XLSX.utils.book_new();
-
-  // --- Sheet 1: Student Report ---
-  const totalMaxAll = assessments.reduce((s, a) => s + (a.max || 0), 0);
-  const studentHeader = ['Student ID', 'Name', ...assessments.map(a => `${a.name} (/${a.max})`), `Total Marks (/${totalMaxAll})`, 'Total %', 'Letter Grade', 'GPA', ...clos.map(c => `${c.name} Attainment %`), 'OBE Attainment %', 'Level'];
-  const studentRows = students.map(stu => {
-    let totalMax = 0, totalScore = 0;
-    assessments.forEach(a => { totalMax += a.max || 0; totalScore += (stu.marks[a.id] || 0); });
-    const totalPct = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
-    const grd = getGrade(totalPct);
-
-    const sa = computeStudentAttainment(stu);
-    const cloPcts = clos.map(clo => sa.cloPct[clo.id] || 0);
-
-    return [stu.id, stu.name, ...assessments.map(a => stu.marks[a.id] || 0), totalScore, totalPct, grd.letter, grd.gp, ...cloPcts, sa.overall, sa.level.label];
-  });
-  const wsStudents = XLSX.utils.aoa_to_sheet([studentHeader, ...studentRows.map(r => r.map(safeCell))]);
-  wsStudents['!cols'] = studentHeader.map(() => ({ wch: 16 }));
-  XLSX.utils.book_append_sheet(wb, wsStudents, 'Student Report');
-
-  // --- Sheet 2: CLO Attainment Summary (includes Overall Class row) ---
-  const cloHeader = ['CLO', 'Description', "Bloom's Level", 'Mapped PLO', 'Attainment %', 'Class Average %', 'Level'];
-  const cloRows = clos.map(clo => {
-    const d = data[clo.id] || { attainment: 0, avg: 0, level: { label: 'No Data' } };
-    return [clo.name, clo.desc, clo.bloom, clo.plo, d.attainment, d.avg, d.level.label];
-  });
-  if (clos.length) {
-    const overallAtt = Math.round(clos.reduce((s, c) => s + (data[c.id]?.attainment || 0), 0) / clos.length);
-    const overallAvg = Math.round(clos.reduce((s, c) => s + (data[c.id]?.avg || 0), 0) / clos.length);
-    cloRows.push(['OVERALL CLASS', 'Average across all CLOs', '', '', overallAtt, overallAvg, getLevel(overallAtt).label]);
-  }
-  const wsClo = XLSX.utils.aoa_to_sheet([cloHeader, ...cloRows.map(r => r.map(safeCell))]);
-  wsClo['!cols'] = [{wch:10},{wch:50},{wch:14},{wch:16},{wch:14},{wch:16},{wch:18}];
-  XLSX.utils.book_append_sheet(wb, wsClo, 'CLO Summary');
-
-  // --- Sheet 3: Assessment Plan ---
-  const assHeader = ['Assessment', 'Max Marks', 'Weight %', ...clos.map(c => c.name + ' %')];
-  const assRows = assessments.map(a => [a.name, a.max, a.weight, ...clos.map(c => a.cloMapping[c.id] || 0)]);
-  const totalWeight = assessments.reduce((s, a) => s + (a.weight || 0), 0);
-  assRows.push(['TOTAL', '', totalWeight, ...clos.map(() => '')]);
-  if (Math.abs(totalWeight - 100) >= 0.5) {
-    assRows.push([`WARNING: weights total ${totalWeight}%, not 100% - attainment % below is not reliable until this is corrected in the app.`]);
-  }
-  const wsAss = XLSX.utils.aoa_to_sheet([assHeader, ...assRows]);
-  wsAss['!cols'] = assHeader.map(() => ({ wch: 16 }));
-  XLSX.utils.book_append_sheet(wb, wsAss, 'Assessment Plan');
-
-  // --- Sheet 4: Weekly Outline ---
-  const weekHeader = ['Week', 'Topic', 'Mapped CLO'];
-  const weekRows = weeklyOutline.map(w => [w.week, w.topic, w.clo]);
-  const wsWeek = XLSX.utils.aoa_to_sheet([weekHeader, ...weekRows]);
-  wsWeek['!cols'] = [{wch:8},{wch:70},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, wsWeek, 'Weekly Outline');
-
-  // --- Sheet 5: DSU Grading Scale (reference) ---
-  const gradeHeader = ['Marks', 'Letter Grade', 'Grade Points'];
-  const gradeRows = DSU_GRADE_SCALE.map(r => [r.min === r.max ? `${r.min}` : `${r.min}-${r.max}`, r.grade, r.gp.toFixed(2)]);
-  const wsGrade = XLSX.utils.aoa_to_sheet([gradeHeader, ...gradeRows]);
-  wsGrade['!cols'] = [{wch:14},{wch:14},{wch:14}];
-  XLSX.utils.book_append_sheet(wb, wsGrade, 'Grading Scale');
-
-  const safeName = (courseData.name || 'OBE_Course').replace(/[^a-z0-9]+/gi, '_');
-
+function loadFromBrowser() {
   try {
-    // Build the file as raw bytes ourselves and trigger the download manually.
-    // This is more reliable than XLSX.writeFile() inside sandboxed/embedded browser
-    // contexts, where synthetic clicks on internally-created links can silently fail.
-    const wbArray = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([wbArray], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    triggerDownload(blob, `${safeName}_OBE_Report.xlsx`);
+    const raw = localStorage.getItem(BROWSER_SAVE_KEY);
+    if (!raw) { alert('No saved data found in this browser.'); return; }
+    const state = JSON.parse(raw);
+
+    courseData = state.courseData || courseData;
+    clos = Array.isArray(state.clos) ? state.clos : [];
+    assessments = Array.isArray(state.assessments) ? state.assessments : [];
+    weeklyOutline = Array.isArray(state.weeklyOutline) ? state.weeklyOutline : [];
+    students = Array.isArray(state.students) ? state.students : [];
+    currentThreshold = typeof state.currentThreshold === 'number' ? state.currentThreshold : currentThreshold;
+
+    document.getElementById('course-name-field').innerText = courseData.name || '';
+    document.getElementById('course-semester-field').innerText = courseData.semester || '';
+    renderCLOList();
+    renderAssessmentTable();
+    renderWeeklyOutline();
+    renderStudentTable();
+    if (!document.getElementById('tab-2').classList.contains('hidden')) renderDashboard();
+
+    alert(`Loaded from browser storage${state.savedAt ? ' (saved ' + new Date(state.savedAt).toLocaleString() + ')' : ''}.`);
   } catch (err) {
-    console.error('Excel export failed:', err);
-    alert('Could not generate the Excel file (' + err.message + '). Generating a Word report instead, which you can still upload to the digital course folder.');
-    downloadWordReport();
+    console.error(err);
+    alert('Could not load saved data from this browser (' + err.message + ').');
   }
 }
 
@@ -1297,7 +1203,7 @@ async function downloadWordReport() {
     triggerDownload(blob, `${safeName}_Student_Report.docx`);
   } catch (err) {
     console.error('Word export failed:', err);
-    alert('Could not generate the Word file (' + err.message + '). Please try again, or use the Download Excel Report button instead.');
+    alert('Could not generate the Word file (' + err.message + '). Please check your internet connection and try again.');
   }
 }
 
