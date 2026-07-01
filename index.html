@@ -10,13 +10,49 @@
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  body { font-family: 'Inter', system_ui, sans-serif; }
+  body { font-family: 'Inter', system_ui, sans-serif; transition: background-color .2s ease, color .2s ease; }
   .dsu-maroon { color: #8B1538; }
   .dsu-gold { color: #C9A227; }
   .nav-active { border-bottom: 3px solid #8B1538; color: #8B1538; font-weight: 600; }
   .metric { font-size: 1.85rem; line-height: 1; font-weight: 700; }
   .level-badge { font-size: 0.7rem; padding: 1px 9px; border-radius: 9999px; font-weight: 700; }
+
+  /* ===== Light theme overrides ===== */
+  html.theme-light body { background-color: #f8fafc; color: #1e293b; }
+  html.theme-light .bg-slate-950 { background-color: #f8fafc !important; }
+  html.theme-light .bg-slate-900 { background-color: #ffffff !important; }
+  html.theme-light .bg-slate-800 { background-color: #f1f5f9 !important; }
+  html.theme-light .bg-slate-700 { background-color: #e2e8f0 !important; }
+  html.theme-light .bg-slate-600 { background-color: #cbd5e1 !important; }
+  html.theme-light .hover\:bg-slate-700:hover { background-color: #e2e8f0 !important; }
+  html.theme-light .hover\:bg-slate-600:hover { background-color: #cbd5e1 !important; }
+  html.theme-light .border-slate-800 { border-color: #e2e8f0 !important; }
+  html.theme-light .border-slate-700 { border-color: #cbd5e1 !important; }
+  html.theme-light .divide-slate-800 > :not([hidden]) ~ :not([hidden]) { border-color: #e2e8f0 !important; }
+  html.theme-light .text-slate-200 { color: #1e293b !important; }
+  html.theme-light .text-slate-300 { color: #334155 !important; }
+  html.theme-light .text-slate-400 { color: #64748b !important; }
+  html.theme-light .text-slate-500 { color: #64748b !important; }
+  html.theme-light .text-slate-600 { color: #475569 !important; }
+  html.theme-light .hover\:text-slate-200:hover { color: #0f172a !important; }
+  html.theme-light input, html.theme-light p[contenteditable] { color: #1e293b; }
+  html.theme-light input::placeholder { color: #94a3b8; }
+  html.theme-light #export-report-btn { background-color: #0f172a !important; color: #ffffff !important; }
+  html.theme-light #export-report-btn:hover { background-color: #1e293b !important; }
+  html.theme-light ::-webkit-scrollbar-track { background: #f1f5f9; }
+
+  /* Theme toggle switch */
+  .theme-toggle-btn { width: 42px; height: 42px; display:flex; align-items:center; justify-content:center; border-radius: 9999px; transition: background-color .2s ease; }
 </style>
+<script>
+  // Apply saved theme before content paints to avoid a flash of the wrong theme.
+  (function() {
+    try {
+      const saved = localStorage.getItem('obe-theme');
+      if (saved === 'light') document.documentElement.classList.add('theme-light');
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body class="bg-slate-950 text-slate-200">
 <div class="max-w-screen-xl mx-auto">
@@ -33,9 +69,14 @@
           <div class="text-xs font-medium text-[#C9A227]">LEARN TO DISCOVER • Karachi</div>
         </div>
       </div>
-      <div class="px-4 py-1.5 bg-slate-800 rounded-3xl text-sm flex items-center gap-x-2">
-        <i class="fa-solid fa-graduation-cap text-[#C9A227]"></i>
-        <span class="font-medium">OBE Analyzer • Upload Course + Student Data</span>
+      <div class="flex items-center gap-x-3">
+        <div class="px-4 py-1.5 bg-slate-800 rounded-3xl text-sm flex items-center gap-x-2">
+          <i class="fa-solid fa-graduation-cap text-[#C9A227]"></i>
+          <span class="font-medium">OBE Analyzer • Upload Course + Student Data</span>
+        </div>
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="theme-toggle-btn bg-slate-800 hover:bg-slate-700" title="Toggle light / dark mode">
+          <i id="theme-toggle-icon" class="fa-solid fa-sun text-[#C9A227]"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -66,7 +107,7 @@
         <button onclick="downloadWordReport()" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded-3xl flex items-center gap-x-2 text-white font-semibold">
           <i class="fa-solid fa-file-word"></i> <span>Download Word Report (Course Folder)</span>
         </button>
-        <button onclick="exportReport()" class="px-5 py-2 text-sm bg-white text-slate-900 hover:bg-slate-100 rounded-3xl flex items-center gap-x-2 font-semibold">
+        <button onclick="exportReport()" id="export-report-btn" class="px-5 py-2 text-sm bg-white text-slate-900 hover:bg-slate-100 rounded-3xl flex items-center gap-x-2 font-semibold">
           <i class="fa-solid fa-download"></i> <span>Export Text Report</span>
         </button>
       </div>
@@ -238,6 +279,25 @@ let students = []; // Empty by default - user uploads
 
 let attainmentChart = null;
 let currentThreshold = 70;
+
+// ---- Theme (light/dark) ----
+function isLightTheme() {
+  return document.documentElement.classList.contains('theme-light');
+}
+
+function setThemeToggleIcon() {
+  const icon = document.getElementById('theme-toggle-icon');
+  if (!icon) return;
+  icon.className = isLightTheme() ? 'fa-solid fa-moon text-[#8B1538]' : 'fa-solid fa-sun text-[#C9A227]';
+}
+
+function toggleTheme() {
+  document.documentElement.classList.toggle('theme-light');
+  try { localStorage.setItem('obe-theme', isLightTheme() ? 'light' : 'dark'); } catch (e) {}
+  setThemeToggleIcon();
+  // Re-render the attainment chart so its colors match the new theme
+  if (attainmentChart) renderDashboard();
+}
 
 // Tab switching
 function updateCourseField(field, text) {
@@ -903,6 +963,11 @@ function renderAttainmentChart(data) {
   const attainmentValues = clos.map(c => data[c.id]?.attainment || 0);
   const avgValues = clos.map(c => data[c.id]?.avg || 0);
 
+  const light = isLightTheme();
+  const tickColor = light ? '#475569' : '#94a3b8';
+  const gridColor = light ? '#e2e8f0' : '#1e293b';
+  const legendColor = light ? '#1e293b' : '#cbd5e1';
+
   attainmentChart = new Chart(canvas.getContext('2d'), {
     type: 'bar',
     data: {
@@ -929,16 +994,16 @@ function renderAttainmentChart(data) {
         y: {
           beginAtZero: true,
           max: 100,
-          ticks: { color: '#94a3b8' },
-          grid: { color: '#1e293b' }
+          ticks: { color: tickColor },
+          grid: { color: gridColor }
         },
         x: {
-          ticks: { color: '#94a3b8' },
+          ticks: { color: tickColor },
           grid: { display: false }
         }
       },
       plugins: {
-        legend: { labels: { color: '#cbd5e1' } }
+        legend: { labels: { color: legendColor } }
       }
     }
   });
@@ -1225,6 +1290,7 @@ function resetDemo() {
 }
 
 function init() {
+  setThemeToggleIcon();
   document.getElementById('course-name-field').innerText = courseData.name;
   document.getElementById('course-semester-field').innerText = courseData.semester;
   renderCLOList();
