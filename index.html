@@ -88,7 +88,7 @@
         <h1 class="text-4xl font-semibold tracking-tighter">OBE Analyzer</h1>
         <p class="text-slate-400">Upload your Course Outline + Student Data • Instant OBE Attainment Reports</p>
       </div>
-      <div class="flex gap-x-3 flex-wrap justify-end gap-y-2">
+      <div class="flex gap-x-2 flex-wrap justify-end">
         <button onclick="resetDemo()" class="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl flex items-center gap-x-2">
           <i class="fa-solid fa-undo"></i> <span>Reset / Clear</span>
         </button>
@@ -102,14 +102,14 @@
         <button onclick="saveToBrowser()" class="px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-3xl flex items-center gap-x-2">
           <i class="fa-solid fa-cloud-arrow-up"></i> <span>Save in Browser</span>
         </button>
-        <button onclick="sendToDrive()" id="send-to-drive-btn" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 rounded-3xl flex items-center gap-x-2 text-white font-semibold">
-          <i class="fa-brands fa-google-drive"></i> <span>Send to Drive</span>
-        </button>
-        <button onclick="openDriveSetup()" id="drive-setup-btn" class="px-3 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl flex items-center gap-x-2" title="Set up Drive sync">
-          <i class="fa-solid fa-gear"></i>
-        </button>
         <button onclick="loadFromBrowser()" class="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl flex items-center gap-x-2">
           <i class="fa-solid fa-cloud-arrow-down"></i> <span>Load from Browser</span>
+        </button>
+        <button onclick="saveToGoogleDrive()" class="px-4 py-2 text-sm bg-emerald-700 hover:bg-emerald-800 rounded-3xl flex items-center gap-x-2 text-white">
+          <i class="fa-brands fa-google-drive"></i> <span>Save to Google Drive</span>
+        </button>
+        <button onclick="loadFromGoogleDrive()" class="px-4 py-2 text-sm bg-emerald-800 hover:bg-emerald-900 rounded-3xl flex items-center gap-x-2 text-white">
+          <i class="fa-brands fa-google-drive"></i> <span>Load from Google Drive</span>
         </button>
         <button onclick="downloadWordReport()" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-700 rounded-3xl flex items-center gap-x-2 text-white font-semibold">
           <i class="fa-solid fa-file-word"></i> <span>Download Word Report (Course Folder)</span>
@@ -120,12 +120,15 @@
       </div>
     </div>
 
+
     <!-- Tabs -->
-    <div class="flex gap-x-3 border-b border-slate-800 mb-6 text-sm">
+    <div class="flex border-b border-slate-800 mb-6 text-sm">
       <button onclick="showTab(0)" class="tab-btn px-6 py-3 font-medium nav-active" data-tab="0">Course Outline</button>
       <button onclick="showTab(1)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="1">Student Data</button>
       <button onclick="showTab(2)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="2">OBE Dashboard</button>
-      <button onclick="showTab(3)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="3">Program OBE</button>
+      <button onclick="showTab(3)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="3"><i class="fa-solid fa-id-card mr-1"></i>Student Transcript <i id="tr-lock-3" class="fa-solid fa-lock text-[10px] ml-1 text-slate-500"></i></button>
+      <button onclick="showTab(4)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="4"><i class="fa-solid fa-bullseye mr-1"></i>Program PLO Attainment <i id="tr-lock-4" class="fa-solid fa-lock text-[10px] ml-1 text-slate-500"></i></button>
+      <button onclick="showTab(5)" class="tab-btn px-6 py-3 font-medium text-slate-400 hover:text-slate-200" data-tab="5"><i class="fa-solid fa-users-rectangle mr-1"></i>PLO Attained by Student</button>
     </div>
 
     <!-- TAB 0: Course Outline + Upload -->
@@ -140,14 +143,6 @@
           <div class="flex-1 min-w-[150px]">
             <label class="text-xs text-slate-400">Semester</label>
             <p contenteditable="true" onblur="updateCourseField('semester', this.innerText)" id="course-semester-field" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 mt-1 outline-none"></p>
-          </div>
-          <div class="flex-1 min-w-[150px]">
-            <label class="text-xs text-slate-400">Program (e.g. BBA, BS Accounting &amp; Finance, BS FinTech)</label>
-            <p contenteditable="true" onblur="updateCourseField('program', this.innerText)" id="course-program-field" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 mt-1 outline-none"></p>
-          </div>
-          <div class="flex-1 min-w-[150px]">
-            <label class="text-xs text-slate-400">Faculty Name</label>
-            <p contenteditable="true" onblur="updateCourseField('faculty', this.innerText)" id="course-faculty-field" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 mt-1 outline-none"></p>
           </div>
         </div>
       </div>
@@ -266,7 +261,7 @@
           </table>
         </div>
 
-        <div class="mt-4 flex justify-end gap-x-3">
+        <div class="mt-4 flex justify-end gap-x-2">
           <button onclick="saveProgress()" class="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-3xl text-sm font-semibold flex items-center gap-x-2">
             <i class="fa-solid fa-floppy-disk"></i> <span>Save Progress</span>
           </button>
@@ -289,142 +284,180 @@
       <div id="failure-report"></div>
     </div>
 
-    <!-- TAB 3: Program OBE (whole-program view, pulled from Drive) -->
+    <!-- TAB 3: Student Transcript / Grade Calculation -->
     <div id="tab-3" class="tab-content hidden">
-      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
-        <div class="flex justify-between items-center flex-wrap gap-y-3">
-          <div>
-            <h3 class="font-semibold flex items-center gap-x-2"><i class="fa-brands fa-google-drive dsu-gold"></i> Whole-Program OBE</h3>
-            <p class="text-xs text-slate-400 mt-1">Every course outline faculty have sent to Drive, grouped by program (e.g. BBA), with each course's CLO attainment.</p>
-          </div>
-          <div class="flex gap-x-2">
-            <select id="program-filter" onchange="renderProgramOBE()" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 outline-none">
-              <option value="">All Programs</option>
-            </select>
-            <button onclick="loadProgramOBE()" class="px-4 py-2 text-sm bg-[#8B1538] hover:bg-[#6B0F2A] rounded-3xl flex items-center gap-x-2 text-white font-semibold">
-              <i class="fa-solid fa-rotate"></i> <span>Refresh from Drive</span>
-            </button>
-          </div>
+
+      <div class="bg-slate-900 rounded-3xl p-4 border border-slate-800 mb-6 flex items-center justify-between flex-wrap gap-y-3">
+        <div class="flex items-center gap-x-2">
+          <label class="text-xs text-slate-400 flex-shrink-0"><i class="fa-solid fa-user-graduate mr-1"></i>Viewing student:</label>
+          <select id="tr-student-select" onchange="switchTrStudent(this.value)" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 outline-none min-w-[220px]"></select>
         </div>
-        <p id="program-obe-status" class="text-xs text-slate-500 mt-3"></p>
+        <div class="flex gap-x-2">
+          <button onclick="addTrStudent()" class="text-xs px-3 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-2xl flex items-center gap-x-1 text-white">
+            <i class="fa-solid fa-user-plus fa-sm"></i> Add Student
+          </button>
+          <button onclick="removeTrStudent()" class="text-xs px-3 py-2 bg-rose-600/80 hover:bg-rose-600 rounded-2xl flex items-center gap-x-1 text-white">
+            <i class="fa-solid fa-trash fa-sm"></i> Remove Student
+          </button>
+        </div>
       </div>
 
-      <div id="program-summary-cards" class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6"></div>
-      <div id="program-course-list"></div>
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold flex items-center gap-x-2"><i class="fa-solid fa-id-card dsu-gold"></i> Student Profile <span class="text-xs font-normal text-slate-500">(from Interim Transcript)</span></h3>
+          <label class="cursor-pointer px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded-3xl flex items-center gap-x-2">
+            <i class="fa-solid fa-file-pdf"></i> <span>Upload Transcript (PDF - manual entry)</span>
+          </label>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="tr-profile-grid"></div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="tr-summary-cards"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <h3 class="font-semibold flex items-center gap-x-2"><i class="fa-solid fa-bullseye dsu-gold"></i> Program PLO Attainment</h3>
+            <span id="tr-plo-overall-badge" class="level-badge"></span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Based on courses completed so far (Grade Point ÷ 4.00 × 100%, averaged per PLO). See the Program PLO Attainment tab to edit PLOs / course mapping.</p>
+          <div id="tr-plo-summary-list" class="space-y-2"></div>
+        </div>
+        <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+          <div class="flex justify-between items-center mb-1">
+            <h3 class="font-semibold flex items-center gap-x-2"><i class="fa-solid fa-list-check dsu-gold"></i> CLO Attainment <span class="text-xs font-normal text-slate-500" id="tr-clo-course-label"></span></h3>
+            <span id="tr-clo-overall-badge" class="level-badge"></span>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Course Learning Outcome attainment for this student, from the marks entered in the Student Data tab.</p>
+          <div id="tr-clo-summary-list" class="space-y-2"></div>
+          <p id="tr-clo-summary-hint" class="hidden text-xs text-slate-500 mt-2"></p>
+        </div>
+      </div>
+
+      <div id="tr-semesters-container"></div>
+
+      <div class="flex justify-center mb-6">
+        <button onclick="addTrSemester()" class="text-xs px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-2xl flex items-center gap-x-1 text-white">
+          <i class="fa-solid fa-plus fa-sm"></i> Add Semester
+        </button>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <h3 class="font-semibold mb-4 flex items-center gap-x-2"><i class="fa-solid fa-chart-line dsu-gold"></i> SGPA / CGPA Trend</h3>
+        <canvas id="trGpaChart" height="80"></canvas>
+      </div>
+
+      <div class="flex justify-end">
+        <button onclick="exportTranscriptReport()" class="px-6 py-2.5 bg-slate-700 hover:bg-slate-600 rounded-3xl text-sm font-semibold flex items-center gap-x-2">
+          <i class="fa-solid fa-download"></i> <span>Export Transcript Report</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 4: Program PLO Attainment -->
+    <div id="tab-4" class="tab-content hidden">
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <h3 class="font-semibold mb-2 flex items-center gap-x-2"><i class="fa-solid fa-circle-info dsu-gold"></i> How this works</h3>
+        <p class="text-sm text-slate-400">Each completed course from the Student Transcript tab is mapped to one or more <span class="dsu-gold font-medium">Program Learning Outcomes (PLOs)</span>. A course's contribution to a PLO is derived from the student's grade point in that course (Grade Point ÷ 4.00 × 100%). Attainment for a PLO is the average of all mapped, completed courses. Threshold: <span class="text-emerald-400 font-medium">≥70% Attained</span>, <span class="text-amber-400 font-medium">60–69% Partially Attained</span>, <span class="text-rose-400 font-medium">&lt;60% Not Attained</span> — edit the PLOs and course mapping below to match DSU's official program document.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div class="lg:col-span-2 bg-slate-900 rounded-3xl p-6 border border-slate-800">
+          <h3 class="font-semibold mb-4 flex items-center gap-x-2"><i class="fa-solid fa-chart-simple dsu-gold"></i> PLO Attainment Overview</h3>
+          <canvas id="ploAttainChart" height="110"></canvas>
+        </div>
+        <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 flex flex-col items-center justify-center">
+          <h3 class="font-semibold mb-4 self-start flex items-center gap-x-2"><i class="fa-solid fa-gauge-high dsu-gold"></i> Overall Program Attainment</h3>
+          <canvas id="ploOverallGauge" height="180"></canvas>
+          <div id="plo-overall-label" class="text-center mt-2"></div>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold">Program Learning Outcomes (PLOs) — BBA</h3>
+          <button onclick="addProgramPLO()" class="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded-2xl flex items-center gap-x-1 text-white">
+            <i class="fa-solid fa-plus fa-sm"></i> Add PLO
+          </button>
+        </div>
+        <div class="space-y-3" id="plo-attain-list"></div>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+        <h3 class="font-semibold mb-4">Course → PLO Mapping</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs" id="plo-mapping-table">
+            <thead><tr class="text-slate-400 border-b border-slate-700"><th class="text-left py-2 pr-2 sticky left-0 bg-slate-900">Course</th></tr></thead>
+            <tbody id="plo-mapping-body" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-3">Tick the PLOs each course contributes to. Attainment recalculates automatically from the Student Transcript tab.</p>
+      </div>
+    </div>
+
+    <!-- TAB 5: PLO Attained by Student (from Student Data / marks, grouped by each CLO's Mapped PLO tag) -->
+    <div id="tab-5" class="tab-content hidden">
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <h3 class="font-semibold mb-2 flex items-center gap-x-2"><i class="fa-solid fa-circle-info dsu-gold"></i> How this works</h3>
+        <p class="text-sm text-slate-400">Each CLO in the Course Outline tab carries a <span class="dsu-gold font-medium">Mapped PLO</span> tag. This tab groups CLOs by that tag and, for every student entered in the Student Data tab, averages their CLO-level attainment (from actual marks) across all CLOs sharing the same PLO tag. This shows PLO attainment <em>per individual student</em>, alongside the course-level marks already used elsewhere in the app.</p>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+        <h3 class="font-semibold mb-4 flex items-center gap-x-2"><i class="fa-solid fa-chart-simple dsu-gold"></i> Class Average Attainment per PLO</h3>
+        <canvas id="studentPloChart" height="90"></canvas>
+      </div>
+
+      <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="font-semibold">Student-Wise PLO Attainment</h3>
+          <span class="text-xs text-slate-500">Threshold: <span id="student-plo-threshold-label" class="dsu-gold font-medium"></span>%</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs" id="student-plo-table">
+            <thead><tr class="text-slate-400 border-b border-slate-700" id="student-plo-thead"><th class="text-left py-2 pr-3 sticky left-0 bg-slate-900">Student</th></tr></thead>
+            <tbody id="student-plo-tbody" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+        <p id="student-plo-hint" class="mt-3 text-xs text-slate-500"></p>
+      </div>
     </div>
 
   </div>
 </div>
 
-<script type="text/plain" id="drive-code-source">
-// ============================================================
-// OBE ANALYZER - GOOGLE DRIVE BACKEND
-// ============================================================
-// Paste this whole file into script.google.com (New Project),
-// then Deploy -> New deployment -> Web app
-//   Execute as: Me
-//   Who has access: Anyone
-// Copy the Web app URL it gives you and paste it into the
-// OBE Analyzer app's Drive Setup box.
-// ============================================================
-
-var FOLDER_ID = "1H4LqVtd9_ay1wf7t4LW3scoiGaO7upBv"; // your shared Drive folder
-
-function getFolder_() {
-  return DriveApp.getFolderById(FOLDER_ID);
-}
-
-// Faculty member clicks "Send to Drive" -> app POSTs JSON here.
-function doPost(e) {
-  try {
-    var body = JSON.parse(e.postData.contents);
-    var fileName = (body.fileName || ("OBE_" + new Date().getTime())).replace(/[^a-zA-Z0-9._-]+/g, "_");
-    if (!fileName.toLowerCase().endsWith(".json")) fileName += ".json";
-
-    var folder = getFolder_();
-
-    var existing = folder.getFilesByName(fileName);
-    while (existing.hasNext()) {
-      existing.next().setTrashed(true);
-    }
-
-    var content = JSON.stringify(body.data);
-    var file = folder.createFile(fileName, content, MimeType.PLAIN_TEXT);
-
-    return jsonOut_({ status: "ok", fileId: file.getId(), fileName: fileName });
-  } catch (err) {
-    return jsonOut_({ status: "error", message: String(err) });
-  }
-}
-
-// App's "Program OBE" tab -> GET ?action=listAll to pull every saved course.
-function doGet(e) {
-  try {
-    var action = (e.parameter && e.parameter.action) || "list";
-    var folder = getFolder_();
-
-    if (action === "listAll") {
-      var files = folder.getFilesByType(MimeType.PLAIN_TEXT);
-      var results = [];
-      while (files.hasNext()) {
-        var f = files.next();
-        if (!/\.json$/i.test(f.getName())) continue;
-        try {
-          results.push({
-            name: f.getName(),
-            lastUpdated: f.getLastUpdated().toISOString(),
-            content: f.getBlob().getDataAsString()
-          });
-        } catch (innerErr) {
-          // skip unreadable file, keep going
-        }
-      }
-      return jsonOut_({ status: "ok", files: results });
-    }
-
-    if (action === "list") {
-      var files2 = folder.getFilesByType(MimeType.PLAIN_TEXT);
-      var names = [];
-      while (files2.hasNext()) {
-        var f2 = files2.next();
-        if (/\.json$/i.test(f2.getName())) names.push(f2.getName());
-      }
-      return jsonOut_({ status: "ok", files: names });
-    }
-
-    return jsonOut_({ status: "error", message: "Unknown action" });
-  } catch (err) {
-    return jsonOut_({ status: "error", message: String(err) });
-  }
-}
-
-function jsonOut_(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-</script>
-
-<!-- Drive Setup Modal -->
-<div id="drive-setup-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-  <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-2xl w-full max-h-[85vh] overflow-y-auto">
-    <div class="flex justify-between items-start mb-4">
-      <h3 class="text-lg font-bold flex items-center gap-x-2"><i class="fa-brands fa-google-drive dsu-gold"></i> Set Up Drive Sync</h3>
-      <button onclick="closeDriveSetup()" class="text-slate-400 hover:text-white text-xl leading-none">&times;</button>
+<!-- Password gate overlay for Student Transcript / Program PLO Attainment tabs -->
+<div id="tr-auth-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+  <div class="bg-slate-900 border border-slate-700 rounded-3xl p-8 w-full max-w-sm">
+    <div class="flex flex-col items-center text-center mb-5">
+      <div class="w-14 h-14 bg-[#8B1538] rounded-2xl flex items-center justify-center text-white text-2xl mb-3">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h3 class="font-semibold text-lg">Restricted Access</h3>
+      <p class="text-xs text-slate-400 mt-1">Enter your ID and password to view the Student Transcript and Program PLO Attainment tabs.</p>
     </div>
-
-    <div id="drive-setup-status" class="text-sm mb-4"></div>
-
-    <p class="text-sm text-slate-300 mb-3">Paste your Web App URL below and click Save. That's the only thing you need to do here.</p>
-    <div class="flex gap-x-2 mb-2">
-      <input id="drive-url-input" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 outline-none">
-      <button onclick="saveDriveUrl()" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 rounded-3xl text-white font-semibold whitespace-nowrap">Save</button>
+    <div class="space-y-3">
+      <div>
+        <label class="text-xs text-slate-400">ID</label>
+        <input type="text" id="tr-auth-user" autocomplete="username" class="w-full mt-1 text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 outline-none focus:border-[#C9A227]" placeholder="Enter ID">
+      </div>
+      <div>
+        <label class="text-xs text-slate-400">Password</label>
+        <input type="password" id="tr-auth-pass" autocomplete="current-password" onkeydown="if(event.key==='Enter') checkTrLogin();" class="w-full mt-1 text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 outline-none focus:border-[#C9A227]" placeholder="Enter password">
+      </div>
+      <p id="tr-auth-error" class="hidden text-xs text-rose-400"></p>
+      <div class="flex gap-x-2 pt-2">
+        <button onclick="closeTrAuthOverlay()" class="flex-1 px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-3xl">Cancel</button>
+        <button onclick="checkTrLogin()" class="flex-1 px-4 py-2 text-sm bg-[#8B1538] hover:bg-[#6B0F2A] text-white rounded-3xl font-semibold">Unlock</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
 // Default structure (can be overwritten by upload)
-let courseData = { name: "", semester: "", program: "", faculty: "" };
+let courseData = { name: "", semester: "" };
 
 // Empty by default - populated only when the user uploads a .docx course outline
 let clos = [];
@@ -433,56 +466,133 @@ let weeklyOutline = [];
 let students = []; // Empty by default - user uploads
 
 let attainmentChart = null;
-let currentThreshold = 70;
+let currentThreshold = 50;
 
-// ---- Google Drive sync ----
-// The URL is stored in this browser's localStorage via the in-app Setup
-// wizard (gear icon next to "Send to Drive") - no file editing needed.
-const DRIVE_URL_KEY = 'obe_drive_apps_script_url';
-const DEFAULT_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbweJR4ls3BDGogaGdCR8Ecm-WeYnPvTCZiCoZmBAyYkWp0dKYkk7Ik4HF9cWHn7yiIlPQ/exec";
-let APPS_SCRIPT_URL = localStorage.getItem(DRIVE_URL_KEY) || DEFAULT_APPS_SCRIPT_URL;
-
-function openDriveSetup() {
-  const modal = document.getElementById('drive-setup-modal');
-  const input = document.getElementById('drive-url-input');
-  const status = document.getElementById('drive-setup-status');
-  input.value = APPS_SCRIPT_URL || "";
-  status.innerHTML = APPS_SCRIPT_URL
-    ? '<span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i> Drive sync is connected.</span>'
-    : '<span class="text-slate-400">Not connected yet - paste your Web App URL below, or follow the steps to get one.</span>';
-  modal.classList.remove('hidden');
-}
-
-function closeDriveSetup() {
-  document.getElementById('drive-setup-modal').classList.add('hidden');
-}
-
-function saveDriveUrl() {
-  const val = document.getElementById('drive-url-input').value.trim();
-  if (!val) {
-    alert('Please paste the Web App URL first.');
-    return;
+// ==================== STUDENT TRANSCRIPT + PROGRAM PLO ATTAINMENT ====================
+// Faculty can maintain transcripts for MULTIPLE students here. Each entry holds one
+// student's profile + semester history; trCurrentIndex tracks which one is on screen.
+// trStudent / trSemesters below are kept as live references into the currently
+// selected trStudentsList entry, so all the existing tr* functions (which read/write
+// trStudent.field or push/splice trSemesters directly) keep working unchanged -
+// switching students just repoints these two variables at a different list entry.
+let trStudentsList = [
+  {
+    // Pulled directly from the uploaded interim transcript for Dua Muzaffar (BBA251004)
+    profile: {
+      name: "Dua Muzaffar",
+      regNo: "BBA251004",
+      father: "Mohammad Muzaffar Qureshi",
+      program: "Bachelor of Business Administration",
+      enrolled: "Fall 2025",
+      totalCreditHoursRequired: 135,
+      programDuration: "4 years",
+      status: "Incomplete"
+    },
+    semesters: [
+      {
+        name: "Fall Semester 2025",
+        courses: [
+          { code: "MS-1302", title: "Computer Skills", grade: "A", gp: 4.00, ch: 3 },
+          { code: "HU-1045", title: "Functional English", grade: "A", gp: 4.00, ch: 3 },
+          { code: "HU-1204", title: "Islamic Studies/Ethics", grade: "A", gp: 4.00, ch: 3 },
+          { code: "MS-1401", title: "Microeconomics", grade: "A", gp: 4.00, ch: 3 },
+          { code: "MS-1201", title: "Principles of Accounting", grade: "A", gp: 4.00, ch: 3 }
+        ]
+      },
+      {
+        name: "Spring Semester 2026",
+        courses: [
+          { code: "BS-1021", title: "Business Mathematics and Statistics", grade: "A", gp: 4.00, ch: 3 },
+          { code: "HU-1102", title: "Fehm-e-Quran I", grade: "A", gp: 4.00, ch: 1 },
+          { code: "MS-1202", title: "Financial Accounting", grade: "A", gp: 4.00, ch: 3 },
+          { code: "MS-1402", title: "Macroeconomics", grade: "A", gp: 4.00, ch: 3 },
+          { code: "HU-2101", title: "Pakistan Studies", grade: "A", gp: 4.00, ch: 2 },
+          { code: "MS-1101", title: "Principles of Management", grade: "A", gp: 4.00, ch: 3 },
+          { code: "MS-1001", title: "Principles of Marketing", grade: "A-", gp: 3.67, ch: 3 }
+        ]
+      }
+    ]
   }
-  if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(val)) {
-    if (!confirm('That doesn\'t look like a typical Apps Script Web App URL (should start with https://script.google.com/macros/s/ and end with /exec). Save it anyway?')) return;
-  }
-  APPS_SCRIPT_URL = val;
-  localStorage.setItem(DRIVE_URL_KEY, val);
-  document.getElementById('drive-setup-status').innerHTML = '<span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i> Saved! Drive sync is now connected on this browser.</span>';
-  setTimeout(closeDriveSetup, 900);
+];
+let trCurrentIndex = 0;
+let trStudent = trStudentsList[trCurrentIndex].profile;
+let trSemesters = trStudentsList[trCurrentIndex].semesters;
+
+function blankTrStudentRecord() {
+  return {
+    profile: { name: "New Student", regNo: "", father: "", program: "Bachelor of Business Administration", enrolled: "", totalCreditHoursRequired: 135, programDuration: "4 years", status: "Incomplete" },
+    semesters: []
+  };
 }
 
-function copyDriveCode() {
-  const code = document.getElementById('drive-code-source').textContent;
-  navigator.clipboard.writeText(code).then(() => {
-    const btn = document.getElementById('copy-drive-code-btn');
-    const original = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Copied! Paste it into script.google.com</span>';
-    setTimeout(() => { btn.innerHTML = original; }, 2500);
-  }).catch(() => {
-    alert('Could not copy automatically. Select the code manually from the Code.gs file instead.');
-  });
+// Switch which student's transcript is shown (dropdown in the Student Transcript tab)
+function switchTrStudent(idx) {
+  idx = parseInt(idx, 10);
+  if (isNaN(idx) || !trStudentsList[idx]) return;
+  trCurrentIndex = idx;
+  trStudent = trStudentsList[idx].profile;
+  trSemesters = trStudentsList[idx].semesters;
+  renderTrTab();
 }
+
+function addTrStudent() {
+  trStudentsList.push(blankTrStudentRecord());
+  trCurrentIndex = trStudentsList.length - 1;
+  trStudent = trStudentsList[trCurrentIndex].profile;
+  trSemesters = trStudentsList[trCurrentIndex].semesters;
+  renderTrTab();
+}
+
+function removeTrStudent() {
+  if (trStudentsList.length <= 1) { alert('At least one student record must remain.'); return; }
+  if (!confirm(`Remove the transcript for "${trStudent.name || 'this student'}"? This cannot be undone.`)) return;
+  trStudentsList.splice(trCurrentIndex, 1);
+  trCurrentIndex = Math.max(0, trCurrentIndex - 1);
+  trStudent = trStudentsList[trCurrentIndex].profile;
+  trSemesters = trStudentsList[trCurrentIndex].semesters;
+  renderTrTab();
+}
+
+function renderTrStudentSelector() {
+  const sel = document.getElementById('tr-student-select');
+  if (!sel) return;
+  sel.innerHTML = trStudentsList.map((r, i) =>
+    `<option value="${i}" ${i === trCurrentIndex ? 'selected' : ''}>${(r.profile.name || 'Unnamed Student')}${r.profile.regNo ? ' (' + r.profile.regNo + ')' : ''}</option>`
+  ).join('');
+}
+
+// Default BBA Program Learning Outcomes (editable in the Program PLO Attainment tab)
+let programPLOs = [
+  { id: "PLO1", name: "Business Knowledge", desc: "Apply concepts and theories from accounting, economics, management, marketing and finance to real business problems." },
+  { id: "PLO2", name: "Critical Thinking & Problem Analysis", desc: "Identify, analyze and evaluate complex business problems using analytical and quantitative tools." },
+  { id: "PLO3", name: "Design of Solutions", desc: "Design workable business solutions/strategies considering economic, social and ethical constraints." },
+  { id: "PLO4", name: "Modern Tool Usage", desc: "Use modern IT tools and techniques for business analysis, data management and decision-making." },
+  { id: "PLO5", name: "Individual & Team Work", desc: "Function effectively as an individual and as a member or leader in diverse teams." },
+  { id: "PLO6", name: "Communication", desc: "Communicate effectively, orally and in writing, in a professional business environment." },
+  { id: "PLO7", name: "Ethics", desc: "Apply ethical principles and demonstrate professional and social responsibility." },
+  { id: "PLO8", name: "Society, Environment & Sustainability", desc: "Understand the impact of business decisions on society, economy and environment." },
+  { id: "PLO9", name: "Project & Financial Management", desc: "Apply management and financial principles to manage resources and projects." },
+  { id: "PLO10", name: "Lifelong Learning", desc: "Recognize the need for, and engage in, independent and continuous learning." }
+];
+
+// course code -> array of PLO ids it contributes to (editable defaults)
+let coursePLOMapping = {
+  "MS-1302": ["PLO4"],
+  "HU-1045": ["PLO6"],
+  "HU-1204": ["PLO7"],
+  "MS-1401": ["PLO1", "PLO2"],
+  "MS-1201": ["PLO1"],
+  "BS-1021": ["PLO2"],
+  "HU-1102": ["PLO7"],
+  "MS-1202": ["PLO1"],
+  "MS-1402": ["PLO1", "PLO2"],
+  "HU-2101": ["PLO8"],
+  "MS-1101": ["PLO5", "PLO9"],
+  "MS-1001": ["PLO1", "PLO6"]
+};
+
+let trGpaChart = null, ploAttainChart = null, ploOverallGauge = null;
+const TR_GRADE_POINTS = { "A": 4.00, "A-": 3.67, "B+": 3.33, "B": 3.00, "B-": 2.67, "C+": 2.33, "C": 2.00, "C-": 1.67, "D+": 1.33, "D": 1.00, "F": 0.00 };
 
 // ---- Theme (light/dark) ----
 function isLightTheme() {
@@ -501,6 +611,9 @@ function toggleTheme() {
   setThemeToggleIcon();
   // Re-render the attainment chart so its colors match the new theme
   if (attainmentChart) renderDashboard();
+  if (trGpaChart) renderTrGpaChart();
+  if (ploAttainChart) renderPloCharts();
+  if (studentPloChart) renderStudentPloTab();
 }
 
 // Tab switching
@@ -508,7 +621,49 @@ function updateCourseField(field, text) {
   courseData[field] = text.trim();
 }
 
+// ---- Password gate (Student Transcript + Program PLO Attainment tabs) ----
+const TR_AUTH = { user: "drazamanwarkhan", pass: "pedigree1" };
+let trAuthenticated = false;
+let trPendingTab = null;
+const TR_PROTECTED_TABS = [3, 4];
+
+function openTrAuthOverlay(tabIndex) {
+  trPendingTab = tabIndex;
+  const overlay = document.getElementById('tr-auth-overlay');
+  document.getElementById('tr-auth-user').value = '';
+  document.getElementById('tr-auth-pass').value = '';
+  document.getElementById('tr-auth-error').classList.add('hidden');
+  overlay.classList.remove('hidden');
+  setTimeout(() => document.getElementById('tr-auth-user').focus(), 50);
+}
+
+function closeTrAuthOverlay() {
+  document.getElementById('tr-auth-overlay').classList.add('hidden');
+  trPendingTab = null;
+}
+
+function checkTrLogin() {
+  const u = document.getElementById('tr-auth-user').value.trim();
+  const p = document.getElementById('tr-auth-pass').value;
+  if (u === TR_AUTH.user && p === TR_AUTH.pass) {
+    trAuthenticated = true;
+    document.getElementById('tr-auth-overlay').classList.add('hidden');
+    ['tr-lock-3', 'tr-lock-4'].forEach(id => { const el = document.getElementById(id); if (el) el.className = 'fa-solid fa-lock-open text-[10px] ml-1 text-emerald-400'; });
+    const target = trPendingTab !== null ? trPendingTab : 3;
+    trPendingTab = null;
+    showTab(target);
+  } else {
+    const err = document.getElementById('tr-auth-error');
+    err.textContent = 'Incorrect ID or password.';
+    err.classList.remove('hidden');
+  }
+}
+
 function showTab(tabIndex) {
+  if (TR_PROTECTED_TABS.includes(tabIndex) && !trAuthenticated) {
+    openTrAuthOverlay(tabIndex);
+    return;
+  }
   document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
   document.querySelectorAll('.tab-btn').forEach((el, i) => {
     if (i === tabIndex) el.classList.add('nav-active'); else el.classList.remove('nav-active');
@@ -518,7 +673,9 @@ function showTab(tabIndex) {
   // set in the Course Outline tab, so it never shows stale attainment %.
   if (tabIndex === 1) renderStudentTable();
   if (tabIndex === 2) renderDashboard();
-  if (tabIndex === 3) loadProgramOBE();
+  if (tabIndex === 3) renderTrTab();
+  if (tabIndex === 4) renderPloAttainTab();
+  if (tabIndex === 5) renderStudentPloTab();
 }
 
 // Render functions
@@ -1915,6 +2072,551 @@ function renderAttainmentChart(data) {
 }
 
 
+// ==================== STUDENT TRANSCRIPT TAB ====================
+function trGpForGrade(g) { return TR_GRADE_POINTS.hasOwnProperty(g) ? TR_GRADE_POINTS[g] : (parseFloat(g) || 0); }
+
+function trSemGPA(sem) {
+  let qp = 0, ch = 0;
+  sem.courses.forEach(c => { qp += c.gp * c.ch; ch += c.ch; });
+  return ch ? qp / ch : 0;
+}
+function trCumulativeUpTo(idx) {
+  let qp = 0, ch = 0;
+  for (let i = 0; i <= idx; i++) trSemesters[i].courses.forEach(c => { qp += c.gp * c.ch; ch += c.ch; });
+  return ch ? qp / ch : 0;
+}
+function trTotalCH() {
+  let ch = 0;
+  trSemesters.forEach(s => s.courses.forEach(c => ch += c.ch));
+  return ch;
+}
+function trOverallCGPA() { return trSemesters.length ? trCumulativeUpTo(trSemesters.length - 1) : 0; }
+
+function renderTrProfile() {
+  const grid = document.getElementById('tr-profile-grid');
+  if (!grid) return;
+  const fields = [
+    ["Full Name", "name"], ["Registration No.", "regNo"], ["Father's Name", "father"],
+    ["Program", "program"], ["Enrolled", "enrolled"], ["Program Duration", "programDuration"],
+    ["Credit Hours Required", "totalCreditHoursRequired"], ["Program Status", "status"]
+  ];
+  grid.innerHTML = fields.map(([label, key]) => `
+    <div>
+      <label class="text-xs text-slate-400">${label}</label>
+      <p contenteditable="true" onblur="updateTrStudentField('${key}', this.innerText)" class="text-sm bg-slate-950 border border-slate-700 rounded-2xl px-3 py-2 mt-1 outline-none">${trStudent[key]}</p>
+    </div>`).join('');
+}
+function updateTrStudentField(key, val) { trStudent[key] = val; if (key === 'name' || key === 'regNo') renderTrStudentSelector(); }
+
+function renderTrSummary() {
+  const el = document.getElementById('tr-summary-cards');
+  if (!el) return;
+  const ch = trTotalCH();
+  const cgpa = trOverallCGPA();
+  const pct = trStudent.totalCreditHoursRequired ? Math.min(100, (ch / trStudent.totalCreditHoursRequired) * 100) : 0;
+  const cards = [
+    { label: "Current CGPA", value: cgpa.toFixed(2), icon: "fa-star", color: "dsu-gold" },
+    { label: "Credit Hours Earned", value: `${ch} / ${trStudent.totalCreditHoursRequired}`, icon: "fa-layer-group", color: "dsu-maroon" },
+    { label: "Program Completion", value: `${pct.toFixed(0)}%`, icon: "fa-chart-pie", color: "text-emerald-400" },
+    { label: "Semesters Recorded", value: trSemesters.length, icon: "fa-calendar-days", color: "text-sky-400" }
+  ];
+  el.innerHTML = cards.map(c => `
+    <div class="bg-slate-900 rounded-3xl p-5 border border-slate-800">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-slate-400">${c.label}</span>
+        <i class="fa-solid ${c.icon} ${c.color}"></i>
+      </div>
+      <div class="metric">${c.value}</div>
+    </div>`).join('');
+}
+
+function renderTrSemesters() {
+  const container = document.getElementById('tr-semesters-container');
+  if (!container) return;
+  container.innerHTML = trSemesters.map((sem, sIdx) => {
+    const sgpa = trSemGPA(sem);
+    const cgpa = trCumulativeUpTo(sIdx);
+    const ch = sem.courses.reduce((a, c) => a + c.ch, 0);
+    return `
+    <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-6">
+      <div class="flex justify-between items-center mb-4 flex-wrap gap-y-2">
+        <p contenteditable="true" onblur="updateTrSemesterName(${sIdx}, this.innerText)" class="font-semibold outline-none border-b border-transparent hover:border-slate-700">${sem.name}</p>
+        <div class="flex items-center gap-x-3">
+          <span class="text-xs text-slate-400">SGPA: <span class="dsu-gold font-semibold">${sgpa.toFixed(2)}</span></span>
+          <span class="text-xs text-slate-400">CGPA: <span class="dsu-gold font-semibold">${cgpa.toFixed(2)}</span></span>
+          <button onclick="removeTrSemester(${sIdx})" class="text-rose-400 hover:text-rose-300 text-xs"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-slate-400 border-b border-slate-700">
+              <th class="text-left py-2">Code</th>
+              <th class="text-left py-2">Course Title</th>
+              <th class="text-center py-2">Grade</th>
+              <th class="text-center py-2">GP</th>
+              <th class="text-center py-2">CH</th>
+              <th class="text-center py-2">Quality Pts</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            ${sem.courses.map((c, cIdx) => `
+              <tr>
+                <td class="py-2"><input value="${c.code}" oninput="updateTrCourse(${sIdx},${cIdx},'code',this.value)" class="w-24 text-xs bg-slate-950 border border-slate-700 rounded-xl px-2 py-1 outline-none"></td>
+                <td class="py-2"><input value="${c.title}" oninput="updateTrCourse(${sIdx},${cIdx},'title',this.value)" class="w-full min-w-[180px] text-xs bg-slate-950 border border-slate-700 rounded-xl px-2 py-1 outline-none"></td>
+                <td class="py-2 text-center">
+                  <select onchange="updateTrGrade(${sIdx},${cIdx},this.value)" class="text-xs bg-slate-950 border border-slate-700 rounded-xl px-2 py-1 outline-none">
+                    ${Object.keys(TR_GRADE_POINTS).map(g => `<option value="${g}" ${g === c.grade ? 'selected' : ''}>${g}</option>`).join('')}
+                  </select>
+                </td>
+                <td class="py-2 text-center text-xs">${c.gp.toFixed(2)}</td>
+                <td class="py-2 text-center"><input type="number" min="1" max="6" value="${c.ch}" oninput="updateTrCourse(${sIdx},${cIdx},'ch',parseInt(this.value)||0)" class="w-14 text-xs text-center bg-slate-950 border border-slate-700 rounded-xl px-2 py-1 outline-none"></td>
+                <td class="py-2 text-center text-xs dsu-gold font-medium">${(c.gp * c.ch).toFixed(2)}</td>
+                <td class="py-2 text-center"><button onclick="removeTrCourse(${sIdx},${cIdx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-xmark"></i></button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="flex justify-between items-center mt-3">
+        <span class="text-xs text-slate-500">Credit Hours this semester: ${ch}</span>
+        <button onclick="addTrCourse(${sIdx})" class="text-xs px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded-2xl flex items-center gap-x-1 text-white">
+          <i class="fa-solid fa-plus fa-sm"></i> Add Course
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateTrSemesterName(idx, val) { trSemesters[idx].name = val; }
+function updateTrCourse(sIdx, cIdx, field, val) { trSemesters[sIdx].courses[cIdx][field] = val; refreshTrTab(); }
+function updateTrGrade(sIdx, cIdx, val) {
+  trSemesters[sIdx].courses[cIdx].grade = val;
+  trSemesters[sIdx].courses[cIdx].gp = trGpForGrade(val);
+  refreshTrTab();
+}
+function addTrCourse(sIdx) { trSemesters[sIdx].courses.push({ code: "NEW-000", title: "New Course", grade: "A", gp: 4.00, ch: 3 }); refreshTrTab(); }
+function removeTrCourse(sIdx, cIdx) { trSemesters[sIdx].courses.splice(cIdx, 1); refreshTrTab(); }
+function addTrSemester() { trSemesters.push({ name: `Semester ${trSemesters.length + 1}`, courses: [] }); refreshTrTab(); }
+function removeTrSemester(idx) { if (!confirm('Remove this semester?')) return; trSemesters.splice(idx, 1); refreshTrTab(); }
+
+function refreshTrTab() {
+  renderTrSummary();
+  renderTrSemesters();
+  renderTrGpaChart();
+  // Keep PLO tab's course list / mapping in sync if it's visible or gets opened next
+  if (!document.getElementById('tab-4').classList.contains('hidden')) renderPloAttainTab();
+}
+
+function renderTrGpaChart() {
+  const ctx = document.getElementById('trGpaChart');
+  if (!ctx) return;
+  const labels = trSemesters.map(s => s.name);
+  const sgpas = trSemesters.map(s => trSemGPA(s));
+  const cgpas = trSemesters.map((s, i) => trCumulativeUpTo(i));
+  const grid = isLightTheme() ? '#e2e8f0' : '#1e293b';
+  const tick = isLightTheme() ? '#475569' : '#94a3b8';
+  if (trGpaChart) trGpaChart.destroy();
+  trGpaChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'SGPA', data: sgpas, borderColor: '#C9A227', backgroundColor: '#C9A22733', tension: .3, fill: true },
+        { label: 'CGPA', data: cgpas, borderColor: '#8B1538', backgroundColor: '#8B153833', tension: .3, fill: true }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { min: 0, max: 4, ticks: { color: tick }, grid: { color: grid } },
+        x: { ticks: { color: tick }, grid: { color: grid } }
+      },
+      plugins: { legend: { labels: { color: tick } } }
+    }
+  });
+}
+
+function renderTrTab() {
+  renderTrStudentSelector();
+  renderTrProfile();
+  renderTrSummary();
+  renderTrSemesters();
+  renderTrGpaChart();
+  renderTrPloSummary();
+  renderTrCloSummary();
+}
+
+// ---- PLO attainment summary (overall, shown in the Student Transcript tab) ----
+function renderTrPloSummary() {
+  const listEl = document.getElementById('tr-plo-summary-list');
+  const badgeEl = document.getElementById('tr-plo-overall-badge');
+  if (!listEl || !badgeEl) return;
+  if (!programPLOs.length) {
+    listEl.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No PLOs defined yet. Add them in the Program PLO Attainment tab.</div>`;
+    badgeEl.textContent = '';
+    return;
+  }
+  const data = programPLOs.map(p => ({ p, pct: ploAttainmentFor(p.id) }));
+  listEl.innerHTML = data.map(({ p, pct }) => {
+    const lvl = ploLevelFor(pct);
+    return `
+    <div class="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-2xl px-3 py-2">
+      <div class="min-w-0 pr-2">
+        <span class="text-xs font-bold dsu-gold">${p.id}</span>
+        <span class="text-xs text-slate-300 ml-1 truncate">${p.name}</span>
+      </div>
+      <div class="flex items-center gap-x-2 flex-shrink-0">
+        <span class="text-sm font-semibold" style="color:${lvl.color}">${pct === null ? '—' : pct.toFixed(0) + '%'}</span>
+        <span class="level-badge" style="background:${lvl.color}22; color:${lvl.color}">${lvl.text}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const valid = data.map(d => d.pct).filter(d => d !== null);
+  const attainedCount = valid.filter(d => d >= 70).length;
+  const overall = valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : null;
+  const overallLvl = ploLevelFor(overall);
+  badgeEl.textContent = valid.length ? `${overall.toFixed(0)}% overall • ${attainedCount}/${programPLOs.length} Attained` : 'No data yet';
+  badgeEl.style.background = `${overallLvl.color}22`;
+  badgeEl.style.color = overallLvl.color;
+}
+
+// ---- CLO attainment summary (this course, matched to the transcript student by name) ----
+function findTrStudentInCourse() {
+  const target = (trStudent.name || '').trim().toLowerCase();
+  if (!target) return null;
+  return students.find(s => (s.name || '').trim().toLowerCase() === target) || null;
+}
+
+function renderTrCloSummary() {
+  const listEl = document.getElementById('tr-clo-summary-list');
+  const badgeEl = document.getElementById('tr-clo-overall-badge');
+  const hintEl = document.getElementById('tr-clo-summary-hint');
+  const labelEl = document.getElementById('tr-clo-course-label');
+  if (!listEl || !badgeEl) return;
+  labelEl.textContent = courseData.name ? `— ${courseData.name}` : '';
+
+  if (!clos.length) {
+    listEl.innerHTML = `<div class="text-center py-4 text-xs text-slate-500">No CLOs loaded yet. Upload the course outline in the Course Outline tab.</div>`;
+    badgeEl.textContent = '';
+    hintEl.classList.add('hidden');
+    return;
+  }
+
+  const matched = findTrStudentInCourse();
+  hintEl.classList.remove('hidden');
+  if (!matched) {
+    hintEl.textContent = `No marks found for "${trStudent.name}" in the Student Data tab for this course — showing the class average per CLO instead. Add this student's marks there to see their individual CLO attainment here.`;
+    const classResults = calculateAttainment();
+    listEl.innerHTML = clos.map(clo => {
+      const r = classResults[clo.id] || { avg: 0, level: getLevel(0) };
+      return `
+      <div class="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-2xl px-3 py-2">
+        <div class="min-w-0 pr-2">
+          <span class="text-xs font-bold dsu-gold">${clo.name}</span>
+          <span class="text-xs text-slate-300 ml-1 truncate">${clo.desc}</span>
+        </div>
+        <div class="flex items-center gap-x-2 flex-shrink-0">
+          <span class="text-sm font-semibold text-${r.level.color}-400">${r.avg}%</span>
+          <span class="level-badge bg-${r.level.color}-500/20 text-${r.level.color}-400">Class Avg</span>
+        </div>
+      </div>`;
+    }).join('');
+    badgeEl.textContent = 'Class average shown';
+    badgeEl.style.background = '';
+    badgeEl.style.color = '';
+    return;
+  }
+
+  hintEl.textContent = `Showing ${trStudent.name}'s own CLO attainment from their marks in the Student Data tab.`;
+  const sa = computeStudentAttainment(matched);
+  listEl.innerHTML = clos.map(clo => {
+    const pct = sa.cloPct[clo.id] || 0;
+    const lvl = getLevel(pct);
+    return `
+    <div class="flex items-center justify-between bg-slate-950 border border-slate-800 rounded-2xl px-3 py-2">
+      <div class="min-w-0 pr-2">
+        <span class="text-xs font-bold dsu-gold">${clo.name}</span>
+        <span class="text-xs text-slate-300 ml-1 truncate">${clo.desc}</span>
+      </div>
+      <div class="flex items-center gap-x-2 flex-shrink-0">
+        <span class="text-sm font-semibold text-${lvl.color}-400">${pct}%</span>
+        <span class="level-badge bg-${lvl.color}-500/20 text-${lvl.color}-400">${lvl.label}</span>
+      </div>
+    </div>`;
+  }).join('');
+  badgeEl.textContent = `${sa.overall}% overall • ${sa.level.label}`;
+  badgeEl.style.background = '';
+  badgeEl.style.color = '';
+}
+
+function exportTranscriptReport() {
+  const lines = [];
+  lines.push(`DHA SUFFA UNIVERSITY — STUDENT TRANSCRIPT REPORT`);
+  lines.push(`Generated: ${new Date().toLocaleString()}`);
+  lines.push('');
+  lines.push(`Name: ${trStudent.name}`);
+  lines.push(`Registration No: ${trStudent.regNo}`);
+  lines.push(`Father's Name: ${trStudent.father}`);
+  lines.push(`Program: ${trStudent.program}`);
+  lines.push(`Enrolled: ${trStudent.enrolled}`);
+  lines.push(`Program Status: ${trStudent.status}`);
+  lines.push(`Credit Hours Completed: ${trTotalCH()} / ${trStudent.totalCreditHoursRequired}`);
+  lines.push(`Overall CGPA: ${trOverallCGPA().toFixed(2)}`);
+  lines.push('');
+  trSemesters.forEach((sem, i) => {
+    lines.push(`--- ${sem.name} (SGPA ${trSemGPA(sem).toFixed(2)}, CGPA ${trCumulativeUpTo(i).toFixed(2)}) ---`);
+    sem.courses.forEach(c => lines.push(`  ${c.code}  ${c.title.padEnd(40)}  Grade ${c.grade}  GP ${c.gp.toFixed(2)}  CH ${c.ch}`));
+    lines.push('');
+  });
+  lines.push(`=== PROGRAM PLO ATTAINMENT ===`);
+  programPLOs.forEach(p => {
+    const pct = ploAttainmentFor(p.id);
+    const lvl = ploLevelFor(pct);
+    lines.push(`${p.id} - ${p.name}: ${pct === null ? 'No data' : pct.toFixed(1) + '%'} (${lvl.text})`);
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  triggerDownload(blob, `${trStudent.regNo || 'student'}_Transcript_Report.txt`);
+}
+
+// ==================== PROGRAM PLO ATTAINMENT TAB ====================
+function trAllCourses() {
+  let list = [];
+  trSemesters.forEach(s => s.courses.forEach(c => list.push(c)));
+  return list;
+}
+
+function ploAttainmentFor(ploId) {
+  const courses = trAllCourses().filter(c => (coursePLOMapping[c.code] || []).includes(ploId));
+  if (!courses.length) return null;
+  return courses.reduce((a, c) => a + (c.gp / 4 * 100), 0) / courses.length;
+}
+
+function ploLevelFor(pct) {
+  if (pct === null) return { text: "No Data", color: "#64748b" };
+  if (pct >= 70) return { text: "Attained", color: "#34d399" };
+  if (pct >= 60) return { text: "Partially Attained", color: "#fbbf24" };
+  return { text: "Not Attained", color: "#fb7185" };
+}
+
+function renderPloList() {
+  const el = document.getElementById('plo-attain-list');
+  if (!el) return;
+  el.innerHTML = programPLOs.map((p, i) => {
+    const pct = ploAttainmentFor(p.id);
+    const lvl = ploLevelFor(pct);
+    return `
+    <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4">
+      <div class="flex justify-between items-start gap-x-3 flex-wrap">
+        <div class="flex-1 min-w-[220px]">
+          <div class="flex items-center gap-x-2 mb-1">
+            <span class="text-xs font-bold dsu-gold">${p.id}</span>
+            <input value="${p.name}" oninput="updateProgramPLO(${i},'name',this.value)" class="text-sm font-semibold bg-transparent outline-none border-b border-transparent hover:border-slate-700 flex-1">
+          </div>
+          <textarea oninput="updateProgramPLO(${i},'desc',this.value)" class="w-full text-xs text-slate-400 bg-transparent outline-none resize-none" rows="2">${p.desc}</textarea>
+        </div>
+        <div class="flex flex-col items-end gap-y-1 min-w-[120px]">
+          <span class="metric" style="font-size:1.4rem; color:${lvl.color}">${pct === null ? '—' : pct.toFixed(0) + '%'}</span>
+          <span class="level-badge" style="background:${lvl.color}22; color:${lvl.color}">${lvl.text}</span>
+          <button onclick="removeProgramPLO(${i})" class="text-rose-400 hover:text-rose-300 text-xs mt-1"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateProgramPLO(i, field, val) { programPLOs[i][field] = val; renderPloAttainTab(); }
+function addProgramPLO() {
+  const n = programPLOs.length + 1;
+  programPLOs.push({ id: `PLO${n}`, name: "New Outcome", desc: "Describe this learning outcome." });
+  renderPloAttainTab();
+}
+function removeProgramPLO(i) {
+  const id = programPLOs[i].id;
+  if (!confirm(`Remove ${id}? This also clears it from the course mapping.`)) return;
+  programPLOs.splice(i, 1);
+  Object.keys(coursePLOMapping).forEach(k => coursePLOMapping[k] = coursePLOMapping[k].filter(x => x !== id));
+  renderPloAttainTab();
+}
+
+function renderPloMappingTable() {
+  const thead = document.querySelector('#plo-mapping-table thead tr');
+  const body = document.getElementById('plo-mapping-body');
+  if (!thead || !body) return;
+  thead.innerHTML = `<th class="text-left py-2 pr-2 sticky left-0 bg-slate-900">Course</th>` +
+    programPLOs.map(p => `<th class="text-center py-2 px-2">${p.id}</th>`).join('');
+
+  body.innerHTML = trAllCourses().map(c => `
+    <tr>
+      <td class="py-2 pr-2 sticky left-0 bg-slate-900 whitespace-nowrap">${c.code} <span class="text-slate-500">— ${c.title}</span></td>
+      ${programPLOs.map(p => `
+        <td class="py-2 px-2 text-center">
+          <input type="checkbox" ${(coursePLOMapping[c.code] || []).includes(p.id) ? 'checked' : ''} onchange="togglePloMapping('${c.code}','${p.id}',this.checked)">
+        </td>`).join('')}
+    </tr>`).join('');
+}
+
+function togglePloMapping(code, ploId, checked) {
+  if (!coursePLOMapping[code]) coursePLOMapping[code] = [];
+  if (checked) {
+    if (!coursePLOMapping[code].includes(ploId)) coursePLOMapping[code].push(ploId);
+  } else {
+    coursePLOMapping[code] = coursePLOMapping[code].filter(x => x !== ploId);
+  }
+  renderPloAttainTab();
+}
+
+function renderPloCharts() {
+  const ctx = document.getElementById('ploAttainChart');
+  if (!ctx) return;
+  const grid = isLightTheme() ? '#e2e8f0' : '#1e293b';
+  const tick = isLightTheme() ? '#475569' : '#94a3b8';
+  const data = programPLOs.map(p => ploAttainmentFor(p.id));
+  const colors = data.map(d => ploLevelFor(d).color);
+  if (ploAttainChart) ploAttainChart.destroy();
+  ploAttainChart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: programPLOs.map(p => p.id), datasets: [{ label: 'Attainment %', data: data.map(d => d === null ? 0 : d), backgroundColor: colors }] },
+    options: {
+      responsive: true,
+      scales: {
+        y: { min: 0, max: 100, ticks: { color: tick }, grid: { color: grid } },
+        x: { ticks: { color: tick }, grid: { color: grid } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  const valid = data.filter(d => d !== null);
+  const overall = valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : 0;
+  const overallLvl = ploLevelFor(valid.length ? overall : null);
+  const gctx = document.getElementById('ploOverallGauge');
+  if (ploOverallGauge) ploOverallGauge.destroy();
+  ploOverallGauge = new Chart(gctx, {
+    type: 'doughnut',
+    data: { datasets: [{ data: [overall, 100 - overall], backgroundColor: [overallLvl.color, isLightTheme() ? '#e2e8f0' : '#1e293b'], borderWidth: 0 }] },
+    options: { circumference: 180, rotation: 270, cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+  });
+  const lbl = document.getElementById('plo-overall-label');
+  if (lbl) lbl.innerHTML = `
+    <div class="metric" style="color:${overallLvl.color}">${valid.length ? overall.toFixed(0) + '%' : '—'}</div>
+    <div class="level-badge inline-block mt-1" style="background:${overallLvl.color}22; color:${overallLvl.color}">${overallLvl.text}</div>`;
+}
+
+function renderPloAttainTab() {
+  renderPloList();
+  renderPloMappingTable();
+  renderPloCharts();
+}
+
+// ==================== PLO ATTAINED BY STUDENT (from marks-based CLOs) ====================
+let studentPloChart = null;
+
+// Distinct, non-empty "Mapped PLO" tags across all CLOs, in first-seen order
+function getDistinctCLOPloTags() {
+  const seen = [];
+  clos.forEach(c => {
+    const tag = (c.plo || '').trim();
+    if (tag && !seen.includes(tag)) seen.push(tag);
+  });
+  return seen;
+}
+
+// For one student: average their CLO % (from computeStudentAttainment) across all
+// CLOs that share each PLO tag.
+function computeStudentPloAttainment(stu, ploTags) {
+  const sa = computeStudentAttainment(stu);
+  const result = {};
+  ploTags.forEach(tag => {
+    const matchingClos = clos.filter(c => (c.plo || '').trim() === tag);
+    if (!matchingClos.length) { result[tag] = null; return; }
+    const sum = matchingClos.reduce((a, c) => a + (sa.cloPct[c.id] || 0), 0);
+    result[tag] = Math.round(sum / matchingClos.length);
+  });
+  return result;
+}
+
+function renderStudentPloTab() {
+  const thead = document.getElementById('student-plo-thead');
+  const tbody = document.getElementById('student-plo-tbody');
+  const hint = document.getElementById('student-plo-hint');
+  const threshLabel = document.getElementById('student-plo-threshold-label');
+  if (!thead || !tbody) return;
+  if (threshLabel) threshLabel.textContent = currentThreshold;
+
+  if (clos.length === 0) {
+    hint.textContent = 'Add CLOs (with a Mapped PLO tag) in the Course Outline tab first.';
+    thead.innerHTML = '<th class="text-left py-2 pr-3 sticky left-0 bg-slate-900">Student</th>';
+    tbody.innerHTML = '';
+    if (studentPloChart) { studentPloChart.destroy(); studentPloChart = null; }
+    return;
+  }
+  if (students.length === 0) {
+    hint.textContent = 'Add student marks in the Student Data tab first.';
+    thead.innerHTML = '<th class="text-left py-2 pr-3 sticky left-0 bg-slate-900">Student</th>';
+    tbody.innerHTML = '';
+    if (studentPloChart) { studentPloChart.destroy(); studentPloChart = null; }
+    return;
+  }
+
+  const ploTags = getDistinctCLOPloTags();
+  if (ploTags.length === 0) {
+    hint.textContent = 'None of the CLOs have a Mapped PLO tag yet - add one in the Course Outline tab.';
+    thead.innerHTML = '<th class="text-left py-2 pr-3 sticky left-0 bg-slate-900">Student</th>';
+    tbody.innerHTML = '';
+    if (studentPloChart) { studentPloChart.destroy(); studentPloChart = null; }
+    return;
+  }
+  hint.textContent = `${students.length} student(s) x ${ploTags.length} PLO(s), derived from ${clos.length} CLO(s).`;
+
+  thead.innerHTML = `<th class="text-left py-2 pr-3 sticky left-0 bg-slate-900">Student</th>` +
+    ploTags.map(t => `<th class="text-center py-2 px-2">${t}</th>`).join('') +
+    `<th class="text-center py-2 px-2">Overall</th>`;
+
+  const perTagSums = {}; ploTags.forEach(t => perTagSums[t] = { sum: 0, n: 0 });
+
+  tbody.innerHTML = students.map(stu => {
+    const perPlo = computeStudentPloAttainment(stu, ploTags);
+    const cells = ploTags.map(t => {
+      const v = perPlo[t];
+      if (v === null) return `<td class="py-2 px-2 text-center text-slate-600">—</td>`;
+      perTagSums[t].sum += v; perTagSums[t].n++;
+      const lvl = getLevel(v);
+      return `<td class="py-2 px-2 text-center"><span class="level-badge bg-${lvl.color}-500/15 text-${lvl.color}-400">${v}%</span></td>`;
+    }).join('');
+    const sa = computeStudentAttainment(stu);
+    const overallLvl = getLevel(sa.overall);
+    return `<tr>
+      <td class="py-2 pr-3 sticky left-0 bg-slate-900 whitespace-nowrap">${stu.id ? stu.id + ' — ' : ''}${stu.name}</td>
+      ${cells}
+      <td class="py-2 px-2 text-center"><span class="level-badge bg-${overallLvl.color}-500/15 text-${overallLvl.color}-400">${sa.overall}%</span></td>
+    </tr>`;
+  }).join('');
+
+  // Chart: class average per PLO tag
+  const ctx = document.getElementById('studentPloChart');
+  if (ctx) {
+    const grid = isLightTheme() ? '#e2e8f0' : '#1e293b';
+    const tick = isLightTheme() ? '#475569' : '#94a3b8';
+    const avgData = ploTags.map(t => perTagSums[t].n ? Math.round(perTagSums[t].sum / perTagSums[t].n) : 0);
+    const colors = avgData.map(v => v >= 85 ? '#34d399' : v >= 70 ? '#fbbf24' : v >= 60 ? '#eab308' : '#fb7185');
+    if (studentPloChart) studentPloChart.destroy();
+    studentPloChart = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: ploTags, datasets: [{ label: 'Class Average %', data: avgData, backgroundColor: colors }] },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 0, max: 100, ticks: { color: tick }, grid: { color: grid } },
+          x: { ticks: { color: tick }, grid: { color: grid } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+}
+
 function recalculateAll() {
   if (clos.length === 0) { alert("Add CLOs in the Course Outline tab first."); return; }
   if (assessments.length === 0) { alert("Add assessments in the Course Outline tab first."); return; }
@@ -1924,244 +2626,58 @@ function recalculateAll() {
 }
 
 // Save / Load Progress (JSON file - works regardless of browser storage restrictions)
-function saveProgress() {
-  const state = {
+// ---- Shared state collect/apply (used by file, browser, and Google Drive save/load) ----
+function collectFullState() {
+  return {
     savedAt: new Date().toISOString(),
-    courseData,
-    clos,
-    assessments,
-    weeklyOutline,
-    students,
-    currentThreshold
+    courseData, clos, assessments, weeklyOutline, students, currentThreshold,
+    trStudentsList, trCurrentIndex, programPLOs, coursePLOMapping
   };
+}
+
+function applyFullState(state) {
+  if (!state || typeof state !== 'object') throw new Error('Invalid file');
+  courseData = state.courseData || courseData;
+  clos = Array.isArray(state.clos) ? state.clos : [];
+  assessments = Array.isArray(state.assessments) ? state.assessments : [];
+  weeklyOutline = Array.isArray(state.weeklyOutline) ? state.weeklyOutline : [];
+  students = Array.isArray(state.students) ? state.students : [];
+  currentThreshold = typeof state.currentThreshold === 'number' ? state.currentThreshold : currentThreshold;
+
+  // Transcript data: prefer the new multi-student list. Fall back to an older
+  // save file's single trStudent/trSemesters (wrapped as a one-entry list) so
+  // previously saved progress files / browser storage / Drive backups still load.
+  if (Array.isArray(state.trStudentsList) && state.trStudentsList.length) {
+    trStudentsList = state.trStudentsList;
+  } else if (state.trStudent) {
+    trStudentsList = [{ profile: state.trStudent, semesters: Array.isArray(state.trSemesters) ? state.trSemesters : [] }];
+  } else if (!Array.isArray(trStudentsList) || !trStudentsList.length) {
+    trStudentsList = [blankTrStudentRecord()];
+  }
+  trCurrentIndex = (typeof state.trCurrentIndex === 'number' && trStudentsList[state.trCurrentIndex]) ? state.trCurrentIndex : 0;
+  trStudent = trStudentsList[trCurrentIndex].profile;
+  trSemesters = trStudentsList[trCurrentIndex].semesters;
+
+  programPLOs = Array.isArray(state.programPLOs) ? state.programPLOs : programPLOs;
+  coursePLOMapping = state.coursePLOMapping || coursePLOMapping;
+
+  document.getElementById('course-name-field').innerText = courseData.name || '';
+  document.getElementById('course-semester-field').innerText = courseData.semester || '';
+  renderCLOList();
+  renderAssessmentTable();
+  renderWeeklyOutline();
+  renderStudentTable();
+  if (!document.getElementById('tab-2').classList.contains('hidden')) renderDashboard();
+  if (!document.getElementById('tab-3').classList.contains('hidden')) renderTrTab();
+  if (!document.getElementById('tab-4').classList.contains('hidden')) renderPloAttainTab();
+  if (!document.getElementById('tab-5').classList.contains('hidden')) renderStudentPloTab();
+}
+
+function saveProgress() {
+  const state = collectFullState();
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
   const safeName = (courseData.name || 'OBE_Course').replace(/[^a-z0-9]+/gi, '_');
   triggerDownload(blob, `${safeName}_progress.json`);
-}
-
-// Sends the current course's saved state to your shared Google Drive folder,
-// via the Apps Script Web App (see Code.gs). Faculty don't need to log into
-// anything - it lands straight in your folder.
-function sendToDrive() {
-  if (!APPS_SCRIPT_URL) {
-    openDriveSetup();
-    return;
-  }
-  if (!courseData.name) {
-    alert('Please enter the Course Name (Course Outline tab) before sending to Drive.');
-    return;
-  }
-
-  const state = {
-    savedAt: new Date().toISOString(),
-    courseData,
-    clos,
-    assessments,
-    weeklyOutline,
-    students,
-    currentThreshold
-  };
-
-  const safeName = (courseData.name || 'OBE_Course').replace(/[^a-z0-9]+/gi, '_');
-  const fileName = `${safeName}_${(courseData.semester || 'NoSemester').replace(/[^a-z0-9]+/gi, '_')}`;
-
-  const btn = document.getElementById('send-to-drive-btn');
-  const originalHTML = btn ? btn.innerHTML : null;
-  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending...</span>'; }
-
-  fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids a CORS preflight against Apps Script
-    body: JSON.stringify({ fileName, data: state })
-  })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status === 'ok') {
-        alert(`Sent to Drive as "${res.fileName}". It will now show up in the Program OBE tab.`);
-      } else {
-        alert('Drive save failed: ' + (res.message || 'Unknown error'));
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Could not reach Google Drive. Check your internet connection and that APPS_SCRIPT_URL is correct.');
-    })
-    .finally(() => {
-      if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
-    });
-}
-
-// ---- Program OBE (whole-program aggregation, pulled from Drive) ----
-
-// Generalized versions of the per-course calculation functions, operating on
-// an arbitrary saved state rather than the page's live globals - needed
-// because this tab compares many different courses' saved data at once.
-function getMarkColumnsFor(assessmentsArr) {
-  const cols = [];
-  (assessmentsArr || []).forEach(a => {
-    if (a.questions && a.questions.length) {
-      const assMax = a.questions.reduce((s, q) => s + (parseFloat(q.max) || 0), 0) || a.max || 0;
-      a.questions.forEach(q => {
-        const own = q.cloMapping || {};
-        const mapping = Object.keys(own).length > 0 ? own : (a.cloMapping || {});
-        cols.push({ assId: a.id, qid: q.id, max: parseFloat(q.max) || 0, weight: a.weight || 0, assessmentMax: assMax, cloMapping: mapping });
-      });
-    } else {
-      cols.push({ assId: a.id, qid: null, max: a.max || 0, weight: a.weight || 0, assessmentMax: a.max || 0, cloMapping: a.cloMapping || {} });
-    }
-  });
-  return cols;
-}
-
-function getColumnMarkFor(stu, col) {
-  if (col.qid) return (stu.qmarks && stu.qmarks[col.assId] && stu.qmarks[col.assId][col.qid]) || 0;
-  return (stu.marks && stu.marks[col.assId]) || 0;
-}
-
-// Returns { overallAttainment, overallAvg, cloResults: [{name, attainment, avg}] } for one saved course state.
-function calculateAttainmentForState(state) {
-  const closArr = Array.isArray(state.clos) ? state.clos : [];
-  const studentsArr = Array.isArray(state.students) ? state.students : [];
-  const threshold = typeof state.currentThreshold === 'number' ? state.currentThreshold : 70;
-  const cols = getMarkColumnsFor(state.assessments);
-
-  const cloResults = closArr.map(clo => {
-    let cloWeight = 0;
-    cols.forEach(col => {
-      const f = (col.cloMapping[clo.id] || 0) / 100;
-      if (f > 0 && col.assessmentMax > 0) cloWeight += (col.weight || 0) * (col.max / col.assessmentMax) * f;
-    });
-    let attained = 0, total = 0;
-    studentsArr.forEach(stu => {
-      let w = 0;
-      cols.forEach(col => {
-        const f = (col.cloMapping[clo.id] || 0) / 100;
-        if (f > 0 && col.assessmentMax > 0 && col.max > 0) {
-          const pct = (getColumnMarkFor(stu, col) / col.max) * 100;
-          w += pct * (col.weight || 0) * (col.max / col.assessmentMax) * f;
-        }
-      });
-      const pct = cloWeight > 0 ? w / cloWeight : 0;
-      total += pct;
-      if (pct >= threshold) attained++;
-    });
-    const att = studentsArr.length > 0 ? Math.round(attained / studentsArr.length * 100) : 0;
-    const avg = studentsArr.length > 0 ? Math.round(total / studentsArr.length) : 0;
-    return { name: clo.name, desc: clo.desc, attainment: att, avg };
-  });
-
-  const overallAttainment = cloResults.length ? Math.round(cloResults.reduce((s, c) => s + c.attainment, 0) / cloResults.length) : 0;
-  const overallAvg = cloResults.length ? Math.round(cloResults.reduce((s, c) => s + c.avg, 0) / cloResults.length) : 0;
-
-  return { overallAttainment, overallAvg, cloResults, studentCount: studentsArr.length, threshold };
-}
-
-let programOBEData = []; // cached parsed courses from the last Drive fetch
-
-function loadProgramOBE() {
-  const status = document.getElementById('program-obe-status');
-  if (!APPS_SCRIPT_URL) {
-    status.innerHTML = '<span class="text-amber-400"><i class="fa-solid fa-triangle-exclamation"></i> Drive sync isn\'t set up yet. <button onclick="openDriveSetup()" class="underline font-semibold">Click here to set it up</button> (2-minute one-time setup).</span>';
-    document.getElementById('program-summary-cards').innerHTML = '';
-    document.getElementById('program-course-list').innerHTML = '';
-    return;
-  }
-
-  status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading course outlines from Drive...';
-
-  fetch(`${APPS_SCRIPT_URL}?action=listAll`)
-    .then(res => res.json())
-    .then(res => {
-      if (res.status !== 'ok') throw new Error(res.message || 'Unknown error');
-      programOBEData = res.files.map(f => {
-        try {
-          const state = JSON.parse(f.content);
-          return { fileName: f.name, lastUpdated: f.lastUpdated, state };
-        } catch (e) {
-          return null;
-        }
-      }).filter(Boolean);
-
-      // Populate the program filter dropdown
-      const select = document.getElementById('program-filter');
-      const programs = [...new Set(programOBEData.map(c => (c.state.courseData && c.state.courseData.program || '').trim()).filter(Boolean))].sort();
-      const currentVal = select.value;
-      select.innerHTML = '<option value="">All Programs</option>' + programs.map(p => `<option value="${p}">${p}</option>`).join('');
-      select.value = programs.includes(currentVal) ? currentVal : '';
-
-      status.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> Loaded ${programOBEData.length} course outline${programOBEData.length===1?'':'s'} from Drive.`;
-      renderProgramOBE();
-    })
-    .catch(err => {
-      console.error(err);
-      status.innerHTML = '<span class="text-rose-400"><i class="fa-solid fa-circle-exclamation"></i> Could not load from Drive: ' + err.message + '</span>';
-    });
-}
-
-function renderProgramOBE() {
-  const filter = document.getElementById('program-filter').value;
-  const courses = programOBEData.filter(c => !filter || (c.state.courseData && c.state.courseData.program) === filter);
-
-  const summaryEl = document.getElementById('program-summary-cards');
-  const listEl = document.getElementById('program-course-list');
-
-  if (courses.length === 0) {
-    summaryEl.innerHTML = '';
-    listEl.innerHTML = '<div class="text-sm text-slate-400 px-2">No course outlines found' + (filter ? ` for "${filter}"` : ' yet - use "Send to Drive" from a course to add one') + '.</div>';
-    return;
-  }
-
-  const analyzed = courses.map(c => ({ ...c, attainment: calculateAttainmentForState(c.state) }));
-
-  const programAvg = Math.round(analyzed.reduce((s, c) => s + c.attainment.overallAttainment, 0) / analyzed.length);
-  const totalStudents = analyzed.reduce((s, c) => s + c.attainment.studentCount, 0);
-  const level = getLevel(programAvg);
-
-  summaryEl.innerHTML = `
-    <div class="bg-gradient-to-r from-[#8B1538] to-[#6B0F2A] rounded-3xl p-6 border border-slate-800">
-      <div class="text-xs uppercase tracking-wide text-white/70 font-medium">${filter || 'Whole Program'} Avg. OBE Attainment</div>
-      <div class="flex items-baseline mt-2"><span class="text-4xl font-bold text-white">${programAvg}</span><span class="text-xl text-white/80">%</span></div>
-      <span class="level-badge bg-${level.color}-500 text-white px-3 py-1.5 mt-2 inline-block">${level.label}</span>
-    </div>
-    <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6">
-      <div class="text-xs uppercase tracking-wide text-slate-400 font-medium">Courses Reporting</div>
-      <div class="text-4xl font-bold mt-2">${analyzed.length}</div>
-    </div>
-    <div class="bg-slate-900 border border-slate-700 rounded-3xl p-6">
-      <div class="text-xs uppercase tracking-wide text-slate-400 font-medium">Total Students Assessed</div>
-      <div class="text-4xl font-bold mt-2">${totalStudents}</div>
-    </div>
-  `;
-
-  listEl.innerHTML = analyzed
-    .sort((a, b) => (a.state.courseData.name || '').localeCompare(b.state.courseData.name || ''))
-    .map(c => {
-      const cd = c.state.courseData || {};
-      const lv = getLevel(c.attainment.overallAttainment);
-      const cloRows = c.attainment.cloResults.map(clo => `
-        <div class="flex items-center justify-between text-xs py-1.5 border-b border-slate-800 last:border-0">
-          <span class="text-slate-300">${clo.name}${clo.desc ? ' - ' + clo.desc : ''}</span>
-          <span class="font-semibold">${clo.attainment}%</span>
-        </div>
-      `).join('') || '<div class="text-xs text-slate-500 py-1.5">No CLOs recorded.</div>';
-
-      return `
-        <div class="bg-slate-900 rounded-3xl p-6 border border-slate-800 mb-4">
-          <div class="flex justify-between items-start flex-wrap gap-y-2">
-            <div>
-              <div class="font-bold">${cd.name || '(Untitled Course)'}</div>
-              <div class="text-xs text-slate-400 mt-0.5">${cd.program || 'No program tagged'} • ${cd.semester || 'No semester'} ${cd.faculty ? '• ' + cd.faculty : ''}</div>
-              <div class="text-xs text-slate-500 mt-0.5">${c.attainment.studentCount} student${c.attainment.studentCount===1?'':'s'} • Threshold ${c.attainment.threshold}% • Last sent ${c.lastUpdated ? new Date(c.lastUpdated).toLocaleDateString() : ''}</div>
-            </div>
-            <div class="text-right">
-              <div class="flex items-baseline justify-end"><span class="text-2xl font-bold">${c.attainment.overallAttainment}</span><span class="text-sm">%</span></div>
-              <span class="level-badge bg-${lv.color}-500 text-white px-2 py-1 text-xs">${lv.label}</span>
-            </div>
-          </div>
-          <div class="mt-3">${cloRows}</div>
-        </div>
-      `;
-    }).join('');
 }
 
 function loadProgress(e) {
@@ -2171,25 +2687,7 @@ function loadProgress(e) {
   reader.onload = function(ev) {
     try {
       const state = JSON.parse(ev.target.result);
-      if (!state || typeof state !== 'object') throw new Error('Invalid file');
-
-      courseData = state.courseData || courseData;
-      clos = Array.isArray(state.clos) ? state.clos : [];
-      assessments = Array.isArray(state.assessments) ? state.assessments : [];
-      weeklyOutline = Array.isArray(state.weeklyOutline) ? state.weeklyOutline : [];
-      students = Array.isArray(state.students) ? state.students : [];
-      currentThreshold = typeof state.currentThreshold === 'number' ? state.currentThreshold : currentThreshold;
-
-      document.getElementById('course-name-field').innerText = courseData.name || '';
-      document.getElementById('course-semester-field').innerText = courseData.semester || '';
-      document.getElementById('course-program-field').innerText = courseData.program || '';
-      document.getElementById('course-faculty-field').innerText = courseData.faculty || '';
-      renderCLOList();
-      renderAssessmentTable();
-      renderWeeklyOutline();
-      renderStudentTable();
-      if (!document.getElementById('tab-2').classList.contains('hidden')) renderDashboard();
-
+      applyFullState(state);
       alert(`Progress loaded from "${file.name}"${state.savedAt ? ' (saved ' + new Date(state.savedAt).toLocaleString() + ')' : ''}.`);
     } catch (err) {
       console.error(err);
@@ -2205,11 +2703,7 @@ const BROWSER_SAVE_KEY = 'obe_dsu_saved_state_v1';
 
 function saveToBrowser() {
   try {
-    const state = {
-      savedAt: new Date().toISOString(),
-      courseData, clos, assessments, weeklyOutline, students, currentThreshold
-    };
-    localStorage.setItem(BROWSER_SAVE_KEY, JSON.stringify(state));
+    localStorage.setItem(BROWSER_SAVE_KEY, JSON.stringify(collectFullState()));
     alert('Saved in this browser. It will still be here next time you open this page on this device, until you clear it.');
   } catch (err) {
     console.error(err);
@@ -2222,28 +2716,87 @@ function loadFromBrowser() {
     const raw = localStorage.getItem(BROWSER_SAVE_KEY);
     if (!raw) { alert('No saved data found in this browser.'); return; }
     const state = JSON.parse(raw);
-
-    courseData = state.courseData || courseData;
-    clos = Array.isArray(state.clos) ? state.clos : [];
-    assessments = Array.isArray(state.assessments) ? state.assessments : [];
-    weeklyOutline = Array.isArray(state.weeklyOutline) ? state.weeklyOutline : [];
-    students = Array.isArray(state.students) ? state.students : [];
-    currentThreshold = typeof state.currentThreshold === 'number' ? state.currentThreshold : currentThreshold;
-
-    document.getElementById('course-name-field').innerText = courseData.name || '';
-    document.getElementById('course-semester-field').innerText = courseData.semester || '';
-    document.getElementById('course-program-field').innerText = courseData.program || '';
-    document.getElementById('course-faculty-field').innerText = courseData.faculty || '';
-    renderCLOList();
-    renderAssessmentTable();
-    renderWeeklyOutline();
-    renderStudentTable();
-    if (!document.getElementById('tab-2').classList.contains('hidden')) renderDashboard();
-
+    applyFullState(state);
     alert(`Loaded from browser storage${state.savedAt ? ' (saved ' + new Date(state.savedAt).toLocaleString() + ')' : ''}.`);
   } catch (err) {
     console.error(err);
     alert('Could not load saved data from this browser (' + err.message + ').');
+  }
+}
+
+// ==================== GOOGLE DRIVE SAVE / LOAD (via Google Apps Script) ====================
+// Saves the same progress file (subject/course name, CLOs, students, transcript,
+// PLO mapping - everything) into ONE single JSON file in your Google Drive - every
+// save OVERWRITES that same file, so it never creates duplicates. This talks to a
+// small Google Apps Script "Web App" that you deploy yourself and connect once (see
+// Code.gs / the setup panel next to the Google Drive buttons).
+const GDRIVE_SCRIPT_URL_KEY = 'dsu_gdrive_script_url';
+// Pre-connected to your deployed Google Apps Script Web App - no setup prompt needed.
+const GDRIVE_DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbweJR4ls3BDGogaGdCR8Ecm-WeYnPvTCZiCoZmBAyYkWp0dKYkk7Ik4HF9cWHn7yiIlPQ/exec';
+
+function getGDriveScriptUrl() {
+  let url = localStorage.getItem(GDRIVE_SCRIPT_URL_KEY) || GDRIVE_DEFAULT_SCRIPT_URL;
+  if (!url) {
+    url = prompt(
+      "Paste your Google Script Web App URL to connect Google Drive.\n\n" +
+      "Don't have one yet? See the \"Google Drive setup\" panel next to this button for free step-by-step instructions (takes ~2 minutes)."
+    );
+    if (url) { url = url.trim(); localStorage.setItem(GDRIVE_SCRIPT_URL_KEY, url); }
+  }
+  return url;
+}
+
+function forgetGDriveScriptUrl() {
+  if (!confirm('Forget the saved Google Script URL? You will be asked to enter it again next time.')) return;
+  localStorage.removeItem(GDRIVE_SCRIPT_URL_KEY);
+  updateGDriveStatus(false);
+}
+
+function updateGDriveStatus(connected) {
+  const el = document.getElementById('gdrive-status');
+  if (el) {
+    el.textContent = connected ? 'Connected to Google Drive' : 'Not connected';
+    el.className = connected ? 'text-xs text-emerald-400' : 'text-xs text-slate-500';
+  }
+}
+
+async function saveToGoogleDrive() {
+  const scriptUrl = getGDriveScriptUrl();
+  if (!scriptUrl) return;
+  const state = collectFullState();
+  try {
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      // text/plain avoids a CORS preflight against Apps Script
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(state)
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Unknown error from script');
+    updateGDriveStatus(true);
+    alert(`Saved to your Google Drive as "${data.name}" (subject: ${courseData.name || 'untitled'}, ${trStudentsList.length} student transcript${trStudentsList.length === 1 ? '' : 's'} included). This file is overwritten each time you save, so there's only ever one copy.`);
+  } catch (err) {
+    console.error(err);
+    updateGDriveStatus(false);
+    alert('Could not save to Google Drive: ' + err.message + '\n\nIf this persists, use "Forget Script URL" and re-enter it - it may be incorrect, or the deployment may need "Anyone" access.');
+  }
+}
+
+async function loadFromGoogleDrive() {
+  const scriptUrl = getGDriveScriptUrl();
+  if (!scriptUrl) return;
+  try {
+    const res = await fetch(scriptUrl, { method: 'GET' });
+    const data = await res.json();
+    if (data.status === 'empty') { alert('No saved data found in Google Drive yet. Use "Save to Google Drive" first.'); return; }
+    if (data.status === 'error') throw new Error(data.message || 'Unknown error from script');
+    applyFullState(data);
+    updateGDriveStatus(true);
+    alert(`Loaded from Google Drive${data.savedAt ? ' (saved ' + new Date(data.savedAt).toLocaleString() + ')' : ''}.`);
+  } catch (err) {
+    console.error(err);
+    updateGDriveStatus(false);
+    alert('Could not load from Google Drive: ' + err.message + '\n\nIf this persists, use "Forget Script URL" and re-enter it.');
   }
 }
 
@@ -2476,6 +3029,14 @@ function resetDemo() {
     students = [];
     renderStudentTable();
     document.getElementById('clo-cards').innerHTML = '';
+    trStudentsList = [blankTrStudentRecord()];
+    trCurrentIndex = 0;
+    trStudent = trStudentsList[0].profile;
+    trSemesters = trStudentsList[0].semesters;
+    renderTrTab();
+    renderPloAttainTab();
+    if (studentPloChart) { studentPloChart.destroy(); studentPloChart = null; }
+    document.getElementById('student-plo-tbody').innerHTML = '';
   }
 }
 
@@ -2483,8 +3044,6 @@ function init() {
   setThemeToggleIcon();
   document.getElementById('course-name-field').innerText = courseData.name;
   document.getElementById('course-semester-field').innerText = courseData.semester;
-  document.getElementById('course-program-field').innerText = courseData.program || '';
-  document.getElementById('course-faculty-field').innerText = courseData.faculty || '';
   renderCLOList();
   renderAssessmentTable();
   renderWeeklyOutline();
@@ -2500,6 +3059,7 @@ function init() {
 }
 
 init();
+updateGDriveStatus(true); // pre-connected to the deployed Google Apps Script
 </script>
 </body>
 </html>
